@@ -6,7 +6,6 @@
 			"folder_exclude_patterns": ["node_modules"],
 		}
 	],
-
 	"syntax_override": {
 		"\\.html$": ["Handlebars", "grammars", "Handlebars"],
 		"\\.js$": ["Babel", "JavaScript (Babel)"]

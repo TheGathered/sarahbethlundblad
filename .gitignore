@@ -57,3 +57,10 @@ typings/
 # dotenv environment variables file
 .env
 
+#pm2 Config
+ecosystem.config.js
+
+#config file
+config.js
+!config.js.bak
+

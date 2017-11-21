@@ -5,12 +5,29 @@
   "dependencies": {
     "react": "^16.1.1",
     "react-dom": "^16.1.1",
-    "react-scripts": "1.0.17"
+    "react-router": "^3.2.0",
+    "react-scripts": "1.0.17",
+    "wpapi": "^1.1.2"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "PORT=3001 react-scripts start",
+    "start:production": "npm run build && npm run start:prod",
+    "start:prod": "NODE_ENV=production node server",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
-  }
+  },
+  "description": "Sarah Beth Lundblad - Painter/Illustrator/Designer",
+  "main": "react-scripts start",
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jimlundblad/sarahbethlundblad.git"
+  },
+  "author": "Jim Lundblad",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jimlundblad/sarahbethlundblad/issues"
+  },
+  "homepage": "http://sarah-beth.net"
 }
