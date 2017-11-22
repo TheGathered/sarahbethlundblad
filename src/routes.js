@@ -9,6 +9,7 @@ const Routes = (props) => (
   <Router {...props}>
     <Route path="/" component={App}>
       <IndexRoute component={List} />
+      <Route path="/page/:page" component={List} />
       <Route path="/:slug" component={Single} />
     </Route>
   </Router>

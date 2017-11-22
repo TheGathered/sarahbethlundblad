@@ -12,34 +12,81 @@ class BlogHome extends Component {
 		this.state = {
 			posts: [],
 			loaded: false,
+			page_size: 5,
 			page: 1,
-			totalPages: 0
+			total_pages: 1,
+			total_items: 0
 		}
 	}
-
+/*
 	render() {
-		return (
-			<div className="App">
-			<div className="App-header">
-			<h2>React with Wp Api</h2>
-			</div>
+		if (this.state.loaded) {
+			const { next_page, previous_page } = this.state.resp.meta;
 
-			<div className="posts">
+			return (
+				<div>
+					{this.state.resp.data.map((post) => {
+						return (
+							<div key={post.slug}>
+								<Link to={`/post/${post.slug}`}>{post.title}</Link>
+							</div>
+						)
+					})}
 
-			{this.state.posts.map((project) =>
-				<div className="project" key={`project-${project.id}}`} id={`project-${project.id}`}>
-				<a> {project.image} </a>
-				<p>{ project.name }</p>
-				<div className="content" dangerouslySetInnerHTML={{__html: project.description}} />
+					<br />
+
+					<div>
+						{previous_page && <Link to={`/p/${previous_page}`}>Prev</Link>}
+
+						{next_page && <Link to={`/p/${next_page}`}>Next</Link>}
+					</div>
 				</div>
-				)}
-
-			</div>
-			</div>
 			);
+		} else {
+			return (
+				<div>
+					Loading...
+				</div>
+			)
+		}
+	}
+*/
+	render() {
+		if (this.state.loaded) {
+			// const next_page = this.stage.page > this.state.page++;
+			// const previous_page = this.state.page--;
+			return (
+				<div className="App">
+					<div className="App-header">
+						<h2>React with Wp Api</h2>
+					</div>
+
+					<div className="posts">
+
+					{this.state.posts.map((project) =>
+						<div className="project" key={`project-${project.id}}`} id={`project-${project.id}`}>
+							<a> {project.image} </a>
+							<p>{ project.name }</p>
+							<p>slug: { project.slug }</p>
+							<div className="content" dangerouslySetInnerHTML={{__html: project.description}} />
+						</div>
+					)}
+
+					</div>
+				</div>
+			);
+		} else {
+			return (
+				<div>
+					Loading...
+				</div>
+			)
+		}
+
 	}
 
 	componentWillMount() {
+		console.log(this.props.params)
 		let page = this.props.params.page || 1;
 
 		this.fetchPosts(page)
@@ -52,12 +99,12 @@ class BlogHome extends Component {
 		this.fetchPosts(page)
 	}
 
-	fetchPosts(page){
-		wp.posts().perPage( 5 ).page( page ).embed()
+	fetchPosts(page, perpage){
+		wp.posts().perPage( perpage ).page( page ).embed()
 			.then(response => this.setState((prevState, props) => {
-				// console.log(response._paging)
 				return {
 					posts: response.map(this.mapproject),
+					total_pages: response._paging.totalPages,
 					loaded: true
 				}
 			}))
@@ -67,13 +114,14 @@ class BlogHome extends Component {
 			})
 	}
 
-	mapproject(posts){
+	mapproject(response){
 		return {
-			id: posts.id,
-			price: posts.price,
-			image: posts._embedded['wp:featuredmedia'][0].media_details.sizes.full.source_url,
-			name: posts.title.rendered,
-			description: posts.content.rendered
+			id: response.id,
+			slug: response.slug,
+			price: response.price,
+			image: response._embedded['wp:featuredmedia'][0].media_details.sizes.full.source_url,
+			name: response.title.rendered,
+			description: response.content.rendered
 		}
 	}
 
