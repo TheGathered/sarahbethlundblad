@@ -6,8 +6,8 @@ module.exports = {
   apps : [
     {
       name      : 'sarahbethlundblad',
-      script    : 'npm',
-      args      : 'run start:production',
+      script    : './server',
+      instances: 4,
       env_production : {
         NODE_ENV: 'production'
       }
@@ -20,7 +20,16 @@ module.exports = {
    */
   deploy : {
     production : {},
-    staging: {},
+    staging: {
+      user: '',
+      host: '',
+      ref: 'origin/master',
+      repo: 'git@github.com:jimlundblad/sarahbethlundblad.git',
+      path: '',
+      key: '',
+      ssh_options: ['ForwardAgent=yes'],
+        'post-deploy': 'react-scripts build && sudo pm2 reload ecosystem.config.js'
+    },
     dev : {}
   }
 };

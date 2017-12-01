@@ -2,8 +2,25 @@ import React, { Component } from 'react';
 import { Link } from 'react-router'
 import { endpoint } from '../config';
 import WPAPI from 'wpapi';
+import Head from 'next/head';
 
 const wp = new WPAPI({ endpoint: endpoint });
+
+function fetchPostByTaxonomySlug(type,slug,page,perpage) {
+	return wp[type]().slug( slug )
+		.then(function( data ) {
+			if ( ! data.length ) {
+				throw new Error( `No category found for slug "${slug}"` );
+			}
+			var catID = data[ 0 ].id;
+			return wp.posts().page( page ).embed().categories(catID).then(data => {
+				if ( ! data.length ) {
+					throw new Error( `No post under "${slug}"` );
+				}
+				return data
+			});
+		});
+}
 
 class BlogHome extends Component {
 
@@ -11,54 +28,39 @@ class BlogHome extends Component {
 		super(props);
 		this.state = {
 			posts: [],
+			categories: {},
+			tags: {},
+			blogInfo: {},
 			loaded: false,
-			page_size: 5,
+			page_size: 6,
 			page: 1,
 			total_pages: 1,
-			total_items: 0
+			total_items: 0,
+			error: false
 		}
 	}
-/*
+
 	render() {
 		if (this.state.loaded) {
-			const { next_page, previous_page } = this.state.resp.meta;
+			let previous_page = this.state.previous_page,
+					next_page = this.state.next_page,
+					total_pages = this.state.total_pages,
+					pagination = [];
 
-			return (
-				<div>
-					{this.state.resp.data.map((post) => {
-						return (
-							<div key={post.slug}>
-								<Link to={`/post/${post.slug}`}>{post.title}</Link>
-							</div>
-						)
-					})}
+			for (var i=0; i<total_pages; i++) {
+				pagination.push(<Link  key={i} to={`/page/${i+1}`}>{`${i+1}`}</Link>);
+			}
 
-					<br />
-
-					<div>
-						{previous_page && <Link to={`/p/${previous_page}`}>Prev</Link>}
-
-						{next_page && <Link to={`/p/${next_page}`}>Next</Link>}
-					</div>
-				</div>
-			);
-		} else {
-			return (
-				<div>
-					Loading...
-				</div>
-			)
-		}
-	}
-*/
-	render() {
-		if (this.state.loaded) {
-			// const next_page = this.stage.page > this.state.page++;
-			// const previous_page = this.state.page--;
 			return (
 				<div className="App">
+
 					<div className="App-header">
-						<h2>React with Wp Api</h2>
+						<Head>
+							<title>{this.state.blogInfo.name}</title>
+							<meta name="description" content={this.state.blogInfo.description} />
+						</Head>
+						<h1> dsads </h1>
+						<h2>{this.state.blogInfo.description}</h2>
 					</div>
 
 					<div className="posts">
@@ -66,15 +68,30 @@ class BlogHome extends Component {
 					{this.state.posts.map((project) =>
 						<div className="project" key={`project-${project.id}}`} id={`project-${project.id}`}>
 							<a> {project.image} </a>
-							<p>{ project.name }</p>
+							<Link to={`/work/${project.slug}`}>{project.name}</Link>
 							<p>slug: { project.slug }</p>
+
 							<div className="content" dangerouslySetInnerHTML={{__html: project.description}} />
 						</div>
 					)}
 
 					</div>
+
+					<nav>
+						{previous_page && <Link to={`/page/${previous_page}`}><i className="fa fa-chevron-left" aria-hidden="true"></i></Link>}
+
+						{pagination}
+
+						{next_page && <Link to={`/page/${next_page}`}><i className="fa fa-chevron-right" aria-hidden="true"></i></Link>}
+					</nav>
 				</div>
 			);
+		} else if (this.state.error){
+			return (
+				<div>
+					404: Nothing here
+				</div>
+			)
 		} else {
 			return (
 				<div>
@@ -86,17 +103,68 @@ class BlogHome extends Component {
 	}
 
 	componentWillMount() {
-		console.log(this.props.params)
-		let page = this.props.params.page || 1;
-
-		this.fetchPosts(page)
+		this.setState({
+			page: this.props.params.page || 1,
+			error: false
+		}, function () {
+			if (this.props.params.cat){
+				this.fetchInfo()
+					.then(this.fetchFilteredPosts('categories',this.state.page))
+			}
+			else {
+				this.fetchInfo()
+					.then(this.fetchPosts(this.state.page))
+			}
+		});
 	}
 
 	componentWillReceiveProps(nextProps) {
-		console.log(nextProps);
-		this.setState({loaded: false});
+		this.setState({
+			loaded: false,
+			error: false
+		});
 		let page = nextProps.params.page || 1;
 		this.fetchPosts(page)
+	}
+
+	fetchInfo(){
+		return new Promise((resolve, reject) => {
+			return Promise.all([
+					fetch(endpoint).then(info => info.json()),
+					wp.tags(),
+					wp.categories()
+				])
+				.then(responses => this.setState((prevState, props) => {
+				return {
+					blogInfo: responses[0],
+					categories: responses[2],
+					tags: responses[1]
+				}
+			}))
+			.catch(err=> {
+				this.setState({error: "Server response wasn't OK"}, function () {
+					throw new Error(this.state.error);
+				});
+			})
+		})
+	}
+
+	fetchFilteredPosts(type, page, perpage){
+		fetchPostByTaxonomySlug(type, this.props.params.cat, page)
+			.then(response => this.setState((prevState, props) => {
+				return {
+					posts: response.map(this.mapproject),
+					total_pages: response._paging.totalPages,
+					next_page: page < response._paging.totalPages ? parseInt(page) + 1 : false,
+					previous_page: page > 1 ? parseInt(page) - 1 : false,
+					loaded: true
+				}
+			}))
+			.catch(err=> {
+				this.setState({error: "Server response wasn't OK"}, function () {
+					// throw new Error(this.state.error);
+				});
+			})
 	}
 
 	fetchPosts(page, perpage){
@@ -105,12 +173,15 @@ class BlogHome extends Component {
 				return {
 					posts: response.map(this.mapproject),
 					total_pages: response._paging.totalPages,
+					next_page: page < response._paging.totalPages ? parseInt(page) + 1 : false,
+					previous_page: page > 1 ? parseInt(page) - 1 : false,
 					loaded: true
 				}
 			}))
-			.catch(function( err ) {
-				// handle error
-				throw new Error("Server response wasn't OK");
+			.catch(err=> {
+				this.setState({error: "Server response wasn't OK"}, function () {
+					// throw new Error(this.state.error);
+				});
 			})
 	}
 
@@ -119,7 +190,7 @@ class BlogHome extends Component {
 			id: response.id,
 			slug: response.slug,
 			price: response.price,
-			image: response._embedded['wp:featuredmedia'][0].media_details.sizes.full.source_url,
+			image: response._embedded['wp:featuredmedia'] ? response._embedded['wp:featuredmedia'][0].media_details.sizes.full.source_url : false,
 			name: response.title.rendered,
 			description: response.content.rendered
 		}
