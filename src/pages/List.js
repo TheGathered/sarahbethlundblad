@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router'
 import { endpoint } from '../config';
 import WPAPI from 'wpapi';
-import Head from 'next/head';
+import {Helmet} from "react-helmet";
 
 const wp = new WPAPI({ endpoint: endpoint });
 
@@ -51,14 +51,22 @@ class BlogHome extends Component {
 				pagination.push(<Link  key={i} to={`/page/${i+1}`}>{`${i+1}`}</Link>);
 			}
 
+			console.log(this.props)
+
 			return (
 				<div className="App">
 
-					<div className="App-header">
-						<Head>
+					<Helmet>
+							<meta charSet="utf-8" />
 							<title>{this.state.blogInfo.name}</title>
-							<meta name="description" content={this.state.blogInfo.description} />
-						</Head>
+							<link rel="canonical" href="http://mysite.com/example" />
+							<meta name="description" content="{this.state.blogInfo.description}" />
+							{previous_page && <link rel="prev" href={`/page/${previous_page}`} />}
+							{next_page && <link rel="next" href={`/page/${next_page}`} />}
+					</Helmet>
+
+					<div className="App-header">
+
 						<h1> dsads </h1>
 						<h2>{this.state.blogInfo.description}</h2>
 					</div>
