@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router'
-import { endpoint } from '../config';
+import { endpoint, base } from '../config';
 import WPAPI from 'wpapi';
 import {Helmet} from "react-helmet";
+import _ from 'lodash';
 
 const wp = new WPAPI({ endpoint: endpoint });
 
@@ -20,6 +21,10 @@ function fetchPostByTaxonomySlug(type,slug,page,perpage) {
 				return data
 			});
 		});
+}
+
+function findCategory(categories,id) {
+		return categories.filter(c => c.id == id).map(c => c.name)
 }
 
 class BlogHome extends Component {
@@ -45,13 +50,20 @@ class BlogHome extends Component {
 			let previous_page = this.state.previous_page,
 					next_page = this.state.next_page,
 					total_pages = this.state.total_pages,
+					location = '/',
 					pagination = [];
 
-			for (var i=0; i<total_pages; i++) {
-				pagination.push(<Link  key={i} to={`/page/${i+1}`}>{`${i+1}`}</Link>);
+			if (this.props.params.cat){
+				location = '/'+this.props.params.cat + '/'
 			}
 
-			console.log(this.props)
+			for (var i=0; i<total_pages; i++) {
+				pagination.push(<Link  key={i} to={`${location}page/${i+1}`}>{`${i+1}`}</Link>);
+			}
+
+			console.log(this.state.categories)
+
+
 
 			return (
 				<div className="App">
@@ -59,10 +71,12 @@ class BlogHome extends Component {
 					<Helmet>
 							<meta charSet="utf-8" />
 							<title>{this.state.blogInfo.name}</title>
-							<link rel="canonical" href="http://mysite.com/example" />
-							<meta name="description" content="{this.state.blogInfo.description}" />
-							{previous_page && <link rel="prev" href={`/page/${previous_page}`} />}
-							{next_page && <link rel="next" href={`/page/${next_page}`} />}
+							<link rel="canonical" href={base+this.props.location.pathname} />
+							<meta name="description" content={this.state.blogInfo.description} />
+
+
+							{previous_page && <link rel="prev" href={`${location}page/${previous_page}`} />}
+							{next_page && <link rel="next" href={`${location}page/${next_page}`} />}
 					</Helmet>
 
 					<div className="App-header">
@@ -76,8 +90,9 @@ class BlogHome extends Component {
 					{this.state.posts.map((project) =>
 						<div className="project" key={`project-${project.id}}`} id={`project-${project.id}`}>
 							<a> {project.image} </a>
-							<Link to={`/work/${project.slug}`}>{project.name}</Link>
+							<Link key={project.catID} to={`/${this.state.categories.filter(c => c.id == project.catID).map(c => c.name)}/${project.slug}`}>{project.name}</Link>
 							<p>slug: { project.slug }</p>
+							<p>category: { project.catID }</p>
 
 							<div className="content" dangerouslySetInnerHTML={{__html: project.description}} />
 						</div>
@@ -86,11 +101,11 @@ class BlogHome extends Component {
 					</div>
 
 					<nav>
-						{previous_page && <Link to={`/page/${previous_page}`}><i className="fa fa-chevron-left" aria-hidden="true"></i></Link>}
+						{previous_page && <Link to={`${location}page/${previous_page}`}><i className="fa fa-chevron-left" aria-hidden="true"></i></Link>}
 
 						{pagination}
 
-						{next_page && <Link to={`/page/${next_page}`}><i className="fa fa-chevron-right" aria-hidden="true"></i></Link>}
+						{next_page && <Link to={`${location}page/${next_page}`}><i className="fa fa-chevron-right" aria-hidden="true"></i></Link>}
 					</nav>
 				</div>
 			);
@@ -200,7 +215,8 @@ class BlogHome extends Component {
 			price: response.price,
 			image: response._embedded['wp:featuredmedia'] ? response._embedded['wp:featuredmedia'][0].media_details.sizes.full.source_url : false,
 			name: response.title.rendered,
-			description: response.content.rendered
+			description: response.content.rendered,
+			catID:response.categories.join()
 		}
 	}
 
