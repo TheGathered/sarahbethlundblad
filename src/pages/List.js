@@ -3,9 +3,13 @@ import { Link } from 'react-router'
 import { endpoint, base } from '../config';
 import WPAPI from 'wpapi';
 import {Helmet} from "react-helmet";
+import {ItemList} from '../helpers/Microdata'
+import striptags from 'striptags';
 import _ from 'lodash';
+import ProgressiveImage from 'react-progressive-image';
 
 const wp = new WPAPI({ endpoint: endpoint });
+var categories, tags = [];
 
 function fetchPostByTaxonomySlug(type,slug,page,perpage) {
 	return wp[type]().slug( slug )
@@ -21,10 +25,6 @@ function fetchPostByTaxonomySlug(type,slug,page,perpage) {
 				return data
 			});
 		});
-}
-
-function findCategory(categories,id) {
-		return categories.filter(c => c.id == id).map(c => c.name)
 }
 
 class BlogHome extends Component {
@@ -61,38 +61,42 @@ class BlogHome extends Component {
 				pagination.push(<Link  key={i} to={`${location}page/${i+1}`}>{`${i+1}`}</Link>);
 			}
 
-			console.log(this.state.categories)
-
-
+			let schema = ItemList(this.props,this.state.posts)
 
 			return (
 				<div className="App">
-
-					<Helmet>
+					<Helmet script={[schema]}>
 							<meta charSet="utf-8" />
 							<title>{this.state.blogInfo.name}</title>
 							<link rel="canonical" href={base+this.props.location.pathname} />
 							<meta name="description" content={this.state.blogInfo.description} />
-
-
+							<meta name="keywords" content={_.map(categories,'name')+','+_.map(tags,'name') } />
+							<meta property="og:type" content="website" />
+							<meta property="og:title" content={this.state.blogInfo.name} />
+							<meta property="og:description" content={this.state.blogInfo.description} />
+							<meta property="og:url" content={base+this.props.location.pathname} />
+							<meta property="og:image" content="/logo.png" />
 							{previous_page && <link rel="prev" href={`${location}page/${previous_page}`} />}
 							{next_page && <link rel="next" href={`${location}page/${next_page}`} />}
 					</Helmet>
 
 					<div className="App-header">
-
-						<h1> dsads </h1>
-						<h2>{this.state.blogInfo.description}</h2>
+						<h1>{this.state.blogInfo.name}</h1>
+						<h2 dangerouslySetInnerHTML={{__html: this.state.blogInfo.description}}></h2>
 					</div>
 
 					<div className="posts">
 
 					{this.state.posts.map((project) =>
-						<div className="project" key={`project-${project.id}}`} id={`project-${project.id}`}>
-							<a> {project.image} </a>
-							<Link key={project.catID} to={`/${this.state.categories.filter(c => c.id == project.catID).map(c => c.name)}/${project.slug}`}>{project.name}</Link>
-							<p>slug: { project.slug }</p>
-							<p>category: { project.catID }</p>
+						<div name={project.slug} className="project" key={project.slug} id={`project-${project.id}`}>
+
+							<ProgressiveImage src={project.image.large} placeholder={project.image.small}>
+								{(src, loading) => (
+									<img className={loading ? 'loading': 'loaded'} src={src} alt='an image'/>
+								)}
+							</ProgressiveImage>
+
+							<Link key={project.category} to={`/${project.category}/${project.slug}`}>{project.name}</Link>
 
 							<div className="content" dangerouslySetInnerHTML={{__html: project.description}} />
 						</div>
@@ -122,7 +126,6 @@ class BlogHome extends Component {
 				</div>
 			)
 		}
-
 	}
 
 	componentWillMount() {
@@ -158,11 +161,11 @@ class BlogHome extends Component {
 					wp.categories()
 				])
 				.then(responses => this.setState((prevState, props) => {
-				return {
-					blogInfo: responses[0],
-					categories: responses[2],
-					tags: responses[1]
-				}
+					return {
+						blogInfo: responses[0],
+						categories: categories = responses[2],
+						tags: responses[1]
+					}
 			}))
 			.catch(err=> {
 				this.setState({error: "Server response wasn't OK"}, function () {
@@ -185,7 +188,7 @@ class BlogHome extends Component {
 			}))
 			.catch(err=> {
 				this.setState({error: "Server response wasn't OK"}, function () {
-					// throw new Error(this.state.error);
+					throw new Error(this.state.error);
 				});
 			})
 	}
@@ -203,7 +206,7 @@ class BlogHome extends Component {
 			}))
 			.catch(err=> {
 				this.setState({error: "Server response wasn't OK"}, function () {
-					// throw new Error(this.state.error);
+					throw new Error(this.state.error);
 				});
 			})
 	}
@@ -213,10 +216,15 @@ class BlogHome extends Component {
 			id: response.id,
 			slug: response.slug,
 			price: response.price,
-			image: response._embedded['wp:featuredmedia'] ? response._embedded['wp:featuredmedia'][0].media_details.sizes.full.source_url : false,
+			image: response._embedded['wp:featuredmedia'] ? {
+				large: response._embedded['wp:featuredmedia'][0].media_details.sizes.full.source_url,
+				small: response._embedded['wp:featuredmedia'][0].media_details.sizes.medium.source_url,
+			} : false,
 			name: response.title.rendered,
 			description: response.content.rendered,
-			catID:response.categories.join()
+			excerpt: response.excerpt.rendered,
+			author: response._embedded['author'] ? response._embedded['author'][0].name : false,
+			category: categories.filter(c => c.id == response.categories[0]).map(c => c.slug)
 		}
 	}
 

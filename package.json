@@ -10,9 +10,11 @@
     "next": "^4.1.4",
     "react": "^16.1.1",
     "react-dom": "^16.1.1",
+    "react-fontawesome": "^1.6.1",
     "react-helmet": "^5.2.0",
     "react-router": "^3.2.0",
     "react-scripts": "1.0.17",
+    "striptags": "^3.1.1",
     "wpapi": "^1.1.2"
   },
   "scripts": {
