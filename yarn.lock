@@ -2,16 +2,6 @@
 # yarn lockfile v1
 
 
-"@fortawesome/fontawesome@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@fortawesome/fontawesome/-/fontawesome-1.0.0.tgz#ef48b981c117e6ff6d99ac9a1275038b0f7c4996"
-
-"@fortawesome/react-fontawesome@^0.0.14":
-  version "0.0.14"
-  resolved "https://registry.yarnpkg.com/@fortawesome/react-fontawesome/-/react-fontawesome-0.0.14.tgz#27ad9bf435ee43785f9eca0691c984e127705762"
-  dependencies:
-    humps "^2.0.1"
-
 "@semantic-release/commit-analyzer@^3.0.1":
   version "3.0.7"
   resolved "https://registry.yarnpkg.com/@semantic-release/commit-analyzer/-/commit-analyzer-3.0.7.tgz#dc955444a6d3d2ae9b8e21f90c2c80c4e9142b2f"
@@ -3643,10 +3633,6 @@ https-proxy-agent@^2.1.0:
   dependencies:
     agent-base "^4.1.0"
     debug "^3.1.0"
-
-humps@^2.0.1:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/humps/-/humps-2.0.1.tgz#dd02ea6081bd0568dc5d073184463957ba9ef9aa"
 
 iconv-lite@0.4.19, iconv-lite@^0.4.17, iconv-lite@~0.4.13:
   version "0.4.19"

@@ -2,16 +2,30 @@
 	"folders":
 	[
 		{
-			"path": ".",
-			"folder_exclude_patterns": ["node_modules"],
+			"folder_exclude_patterns":
+			[
+				"node_modules"
+			],
+			"path": "."
 		}
 	],
-	"syntax_override": {
-		"\\.html$": ["Handlebars", "grammars", "Handlebars"],
-		"\\.js$": ["Babel", "JavaScript (Babel)"]
-	},
-	"settings": {
+	"settings":
+	{
 		"tab_size": 2,
 		"translate_tabs_to_spaces": true
+	},
+	"syntax_override":
+	{
+		"\\.html$":
+		[
+			"Handlebars",
+			"grammars",
+			"Handlebars"
+		],
+		"\\.js$":
+		[
+			"Babel",
+			"JavaScript (Babel)"
+		]
 	}
 }
