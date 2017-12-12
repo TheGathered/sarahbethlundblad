@@ -1,4 +1,8 @@
-import striptags from 'striptags';
+// import striptags from 'striptags';
+
+var striptags = function(string) {
+	return string.replace(/(<([^>]+)>)/ig,"");
+}
 
 export function ItemList(props,posts) {
 
