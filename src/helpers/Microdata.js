@@ -1,10 +1,6 @@
 // import striptags from 'striptags';
 
-var striptags = function(string) {
-	return string.replace(/(<([^>]+)>)/ig,"");
-}
-
-export function ItemList(props,posts) {
+export function StructuredDataCarusel(posts) {
 
 	return {
 		type: 'application/ld+json',
@@ -16,47 +12,28 @@ export function ItemList(props,posts) {
 				return {
 					"@type":"ListItem",
 					"position":i,
-					// "url" : [window.location.origin,post.category,post.slug].join("/"),
-					"item": {
-						"@type" :"VisualArtwork",
-						"url" : [window.location.origin,post.slug].join("#"),
-						"description": striptags(post.description),
-						"name" : post.name,
-						"image": post.image,
-						"artform" : post.category,
-						"creator" : {
-							"@type" : "Person",
-							"name": post.author
-						}
-					}
+					"url" : [window.location.origin,post.categories,post.slug].join("/")
 				}
 			})
 		})
 	}
 }
 
-export function item(props,posts) {
+export function StructuredDataItem(post) {
 	return {
 		type: 'application/ld+json',
 		innerHTML: JSON.stringify({
 			'@context': 'http://schema.org',
 			'@type': 'VisualArtwork',
 			'url': window.location.href,
-			'itemListElement': posts.map((post, i) => {
-				return {
-					"@type":"ListItem",
-					"position":i,
-					"url" : window.location.origin,
-					"description": striptags(post.description),
-					"name" : post.name,
-					"image": post.image,
-					"artform" : post.category,
-					"creator" : {
-						"@type" : "Person",
-						"name": post.author
-					}
-				}
-			})
+			"name" : post.name,
+			"description": post.excerpt,
+			"artform" : post.category,
+			"image": post.image.small,
+			"creator" : {
+				"@type" : "Person",
+				"name": post.author
+			}
 		})
 	}
 }

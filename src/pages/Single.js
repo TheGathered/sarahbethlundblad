@@ -1,60 +1,75 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router'
 import { endpoint, base } from '../config';
+import logo from '../logo.png';
 import WPAPI from 'wpapi';
 import {Helmet} from "react-helmet";
-import {ItemList} from '../helpers/Microdata';
+import {StructuredDataItem} from '../helpers/Microdata'
+import {blogInfo,singlePost} from '../helpers/Fetch'
+
+import _ from 'lodash';
+import ProgressiveImage from 'react-progressive-image';
 
 const wp = new WPAPI({ endpoint: endpoint });
-var categories, tags = [];
+
 
 class BlogPost extends Component {
+
 	constructor(props){
 		super(props);
 		this.state = {
-			posts: [],
+			loaded: false,
+			error: false,
+			page: this.props.params.slug,
+			post: [],
 			categories: {},
 			tags: {},
-			blogInfo: {},
-			loaded: false,
-			error: false
+			blogInfo: {}
 		}
 	}
 
 	render() {
 		if (this.state.loaded) {
 
+			let post = this.state.post;
+			let blogInfo = this.state.blogInfo;
+
+			let previous_page = post.previous_post.slug || false,
+					location = '/',
+					next_page = post.next_post.slug || false,
+					categories = this.state.categories, tags = this.state.tags;
+
+			console.log(this.state)
 
 
-			// let schema = ItemList(this.props,this.state.posts)
+			let schema = StructuredDataItem(this.state.post)
 
+			// TODO: decide on if next / prev is withing category or over all
 			return (
 				<div className="App">
-{/*					<Helmet script={[schema]}>
+					<Helmet script={[schema]}>
 							<meta charSet="utf-8" />
-							<title>{this.state.blogInfo.name}</title>
+							<title>{`${post.name} || ${blogInfo.name}`}</title>
 							<link rel="canonical" href={base+this.props.location.pathname} />
-							<meta name="description" content={this.state.blogInfo.description} />
-							{previous_page && <link rel="prev" href={`${location}page/${previous_page}`} />}
-							{next_page && <link rel="next" href={`${location}page/${next_page}`} />}
-					</Helmet>*/}
+							<meta name="description" content={post.excerpt} />
+							<meta name="keywords" content={_.map(categories,'name')+','+_.map(tags,'name') } />
+							<meta property="og:type" content="website" />
+							<meta property="og:title" content={`${post.name} || ${blogInfo.name}`} />
+							<meta property="og:description" content={post.excerpt} />
+							<meta property="og:url" content={base+this.props.location.pathname} />
+							<meta property="og:image" content={post.image.small} />
+							<meta name="creator" content={post.author} />
 
+							{post.previous_post && <link rel="prev" href={`${location}${post.categories}/${previous_page}`} />}
+							{post.next_post && <link rel="next" href={`${location}${post.categories}/${next_page}`} />}
+					</Helmet>
 
-					<div className="App-header">
-
-						<h1>{this.state.blogInfo.name}</h1>
-						<h2>{this.state.blogInfo.description}</h2>
-					</div>
-
-					<div className="post">
-
-
-					</div>
-
-
+					{post.previous_post && <Link title={post.previous_post.title} rel="prev" href={`${location}${this.state.post.categories}/${previous_page}`} >{post.previous_post.title}<i className="fa fa-chevron-left" aria-hidden="true"></i></Link>}
+					{post.next_post && <Link title={post.next_post.title} rel="next" href={`${location}${this.state.post.categories}/${next_page}`} >{post.next_post.title}<i className="fa fa-chevron-right" aria-hidden="true"></i></Link>}
 				</div>
 			);
 		} else if (this.state.error){
+			// TODO: Error Handling, 404 pages & 500 pages
 			return (
 				<div>
 					404: Nothing here
@@ -70,75 +85,43 @@ class BlogPost extends Component {
 	}
 
 	componentWillMount() {
+		console.log(this.props.params.slug)
 		this.setState({
+			page: this.props.params.slug,
 			error: false
-		}, function () {
-			this.fetchInfo()
-				.then(this.fetchPost(this.props.params.slug))
+		}, function() {
+			blogInfo()
+				.then(info => {
+					this.setState((prevState, props) => info)
+					singlePost(this.props.params.slug)
+						.then(posts => {
+							this.setState((prevState, props) => posts)
+						}, err => {
+							console.error(err);
+							this.setState({error: err})
+						})
+				}, err => {
+					console.error(err);
+					this.setState({error: err})
+				})
+
 		});
 	}
-
 	componentWillReceiveProps(nextProps) {
-		this.setState({
-			loaded: false,
-			error: false
-		});
-		let page = nextProps.params.page || 1;
-		this.fetchPosts(page)
-	}
-
-	fetchInfo(){
-		return new Promise((resolve, reject) => {
-			return Promise.all([
-					fetch(endpoint).then(info => info.json()),
-					wp.tags(),
-					wp.categories()
-				])
-				.then(responses => this.setState((prevState, props) => {
-					return {
-						blogInfo: responses[0],
-						categories: categories = responses[2],
-						tags: responses[1]
-					}
-			}))
-			.catch(err=> {
-				this.setState({error: "Server response wasn't OK"}, function () {
-					throw new Error(this.state.error);
-				});
-			})
+		this.setState((prevState, props) => {
+			return {
+				loaded: false,
+				error: false
+			}
+		}, () => {
+			singlePost(this.props.params.slug)
+				.then(posts => this.setState((prevState, props) => posts))
+				.catch(err => this.setState((prevState, props) => {
+					error: err
+				}))
 		})
 	}
 
-
-	fetchPost(slug){
-		console.log(slug);
-		wp.posts().slug(slug).embed()
-			.then(response => this.setState((prevState, props) => {
-				return {
-					post: response.map(this.mapproject),
-					loaded: true
-				}
-			}))
-			.catch(err=> {
-				this.setState({error: "Server response wasn't OK"}, function () {
-					throw new Error(this.state.error);
-				});
-			})
-	}
-
-	mapproject(response){
-		console.log(response)
-		return {
-			id: response.id,
-			author: response._embedded['author'] ? response._embedded['author'][0].name : false,
-			slug: response.slug,
-			// price: response.price,
-			image: response._embedded['wp:featuredmedia'] ? response._embedded['wp:featuredmedia'][0].media_details.sizes.full.source_url : false,
-			name: response.title.rendered,
-			description: response.content.rendered,
-			// category: categories.filter(c => c.id == response.categories[0]).map(c => c.slug)
-		}
-	}
 }
 
 export default BlogPost;
