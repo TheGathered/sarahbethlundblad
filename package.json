@@ -30,12 +30,12 @@
   "devDependencies": {},
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jimlundblad/sarahbethlundblad.git"
+    "url": "git+github.com:TheGathered/sarahbethlundblad.git"
   },
   "author": "Jim Lundblad",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/jimlundblad/sarahbethlundblad/issues"
+    "url": "https://github.com/TheGathered/sarahbethlundblad/issues"
   },
   "homepage": "http://sarah-beth.co.uk"
 }
