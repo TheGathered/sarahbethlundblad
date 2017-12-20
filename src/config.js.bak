@@ -1,0 +1,5 @@
+module.exports = {
+  'endpoint': '.../wp-json',
+  'base': 'localhost:3001',
+  'redis-store' : '127.0.0.1'
+}
