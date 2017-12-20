@@ -1,10 +1,67 @@
+@import url(https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css);
+
 .App {
   // text-align: center;
+  // background-color: black;
+
+  padding: 30px;
+}
+
+body {
+  // background-color: black;
+  // color: white;
+  font-size: 62.5%;
+  color: #333;
+  font-family: 'Ubuntu Mono', monospace;
+  padding-bottom: 5.5em;
+}
+
+h1 a {
+  color: #333;
+  text-decoration: none;
+  position: relative;
+}
+
+h1 a span {
+  color: #333;
+}
+
+h1 a:hover {
+  color: #333;
+  text-decoration: underline;
+}
+
+h1 a:hover::before {
+  content: '< ';
+  position: absolute;
+  right: 100%;
+  top: 50%;
+  transform: translatey(-50%);
+}
+
+p {
+  font-size: 1.6em;
+}
+
+h1 {
+  font-size: 2.4em;
+  color: inherit;
+}
+
+h2 {
+  font-size: 2em;
+}
+
+
+
+.App a {
+  color: lightblue;
 }
 
 .App-logo {
   // animation: App-logo-spin infinite 20s linear;
   // height: 80px;
+  display: none;
 }
 
 .App-header {
@@ -14,15 +71,202 @@
   // color: white;
 }
 
-.App-title {
-  font-size: 1.5em;
-}
-
 .App-intro {
   font-size: large;
 }
+.posts {
+  text-align: center;
+  box-sizing: border-box;
 
-@keyframes App-logo-spin {
-  // from { transform: rotate(0deg); }
-  // to { transform: rotate(360deg); }
+}
+
+.loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+}
+
+.post {
+  box-sizing: inherit;
+  display: inline-block;
+  vertical-align: top;
+  // float: left;
+  width: 100%;
+  max-width: 640px;
+  padding: 5px;
+}
+
+.post img {
+  max-height: 30vw;
+  margin: 0 auto;
+  display: block;
+  max-width: 100%;
+  height: auto;
+
+}
+
+.post header {
+  border: 1px solid #CCC;
+  text-align: center;
+  overflow: hidden;
+  position: relative;
+}
+
+.post .figure {
+  padding: 15px;
+}
+.post h2 {
+  font-weight: normal;
+  font-size: 1.4em;
+  border-bottom:  1px solid #CCC;
+  line-height: 1em;
+  margin: 0;
+}
+
+.post h2 a {
+  color: #333;
+  display: block;
+  padding: 15px;
+  text-decoration: none;
+  position: relative;
+  padding-right: 40px;
+}
+
+.post h2 a:after {
+  content: '>';
+  position: absolute;
+  right: 0;
+  z-index: 2;
+  width: 40px;
+  text-align: center;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.post h2 a:before {
+  content: '';
+  position: absolute;
+  z-index: 2;
+  border-left: 1px solid #CCC;
+  height: 100%;
+  width: 40px;
+  right: 0;
+  top: 0;
+  // background-color: white;
+}
+
+.post h2 a:hover {
+  background-color: silver;
+}
+
+.post h2 a:hover:after {
+  content: '>>'
+}
+
+.post {
+  overflow: hidden;
+  position: relative;
+}
+
+.post .description {
+  background-color: rgba(255,255,255,0.9);
+  padding: 15px;
+  border-top: 1px solid #CCC;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  transform: translateY(100%);
+  transition: transform 250ms ease-in;
+  pointer-events: none;
+}
+.post .figure:hover + .description {
+  transform: translateY(0);
+  transition: transform 250ms ease-out;
+}
+
+.post .description p {
+  margin: 0;
+}
+
+.post .content {
+  display: none;
+}
+
+
+@media (max-width: 320px) {
+  .post {
+    width: 100%;
+  }
+}
+
+@media (min-width: 640px) {
+  .post {
+    width: 50%;
+  }
+}
+
+@media (min-width: 960px) {
+  .post {
+    width: 33.33%;
+  }
+  .post img {
+    max-height: 80vw;
+  }
+}
+
+@media (min-width: 1280px) {
+  .post {
+    width: 25%;
+  }
+}
+
+@media (min-width: 1600px) {
+  .post {
+    width: 20%;
+  }
+
+  .post img {
+    max-height: 40vh;
+  }
+}
+
+@media (min-width: 1920px) {
+  .post {
+    width: 16.66%;
+  }
+}
+
+.pagination {
+  position: fixed;
+  z-index: 128;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  font-size: 1.4em;
+  text-align: center;
+  background-color: white;
+  border-top: 1px solid #ccc;
+  color: #ccc;
+}
+.pagination  span,
+.pagination  a {
+  display: inline-block;
+  padding: 20px;
+  border-left: 1px solid #ccc;
+  text-decoration: none;
+  color: #ccc;
+}
+.pagination .current {
+  background-color: #ebebeb;
+  color: #999;
+}
+.pagination  a:hover {
+  background-color: #ccc;
+  color: #666;
+}
+
+.pagination  .prev {
+  border-left: none;
 }

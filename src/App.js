@@ -1,6 +1,15 @@
 import React, { Component } from 'react';
 import styles from './App.css';
 
+import WebFont from 'webfontloader';
+
+WebFont.load({
+  google: {
+    families: ['Ubuntu Mono:400', 'monospace']
+  }
+});
+
+
 class App extends Component {
   render() {
     return (

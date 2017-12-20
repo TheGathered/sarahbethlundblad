@@ -1,5 +1,5 @@
 import React from 'react';
-import { Router, IndexRoute, Route } from 'react-router';
+import { Router, IndexRoute, Route, Redirect } from 'react-router';
 
 import ReactGA from 'react-ga';
 
@@ -16,6 +16,9 @@ const Routes = (props) => (
   <Router {...props}>
     <Route path="/" component={App}>
       <IndexRoute component={List} />
+      <Redirect from='/art' to='/art/page/1'/>
+      <Redirect from='/illustration' to='/illustration/page/1'/>
+      <Redirect from='/graphic-design' to='/graphic-design/page/1'/>
       <Route path="/:slug" component={SinglePost} />
       <Route path="/page/:page" component={List} />
       <Route path="/:cat/:slug" component={SinglePost} />

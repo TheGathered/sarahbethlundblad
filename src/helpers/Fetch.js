@@ -46,18 +46,18 @@ export function blogInfo(props, page) {
 		return Promise.all([
 			fetch(endpoint).then(info => info.json()),
 			wp.categories(),
-			wp.tags(),
-			singlePage('about')
+			// wp.tags(),
+			// singlePage('about')
 		]).then(responses => {
 			info = responses[0];
 			categories = responses[1];
-			tags = responses[2];
-			about = responses[3].page;
+			// tags = responses[2];
+			// about = responses[3].page;
 			resolve({
 				blogInfo: info,
 				categories: categories,
-				tags: tags,
-				about: about
+				// tags: tags,
+				// about: about
 			})
 		}, err => reject(err));
 	});
@@ -184,7 +184,7 @@ function mapproject(response) {
 		excerpt: response.excerpt,
 		author: response._embedded['author'] ? response._embedded['author'].map(author=>author.name)[0] : false,
 		categories: TaxNames(categories, response.categories).join() || false,
-		tags: TaxObj(tags, response.tags) || false,
+		// tags: TaxObj(tags, response.tags) || false,
 		previous_post: response.previous_post,
 		next_post: response.next_post
 	}

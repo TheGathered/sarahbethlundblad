@@ -5,6 +5,7 @@ import logo from '../logo.png';
 import {Helmet} from "react-helmet";
 import {StructuredDataCarusel} from '../helpers/Microdata'
 import {blogInfo,postList} from '../helpers/Fetch'
+import imgGlitch from 'img-glitch';
 
 import _ from 'lodash';
 import ProgressiveImage from 'react-progressive-image';
@@ -16,7 +17,7 @@ class BlogHome extends Component {
 		this.state = {
 			loaded: false,
 			error: false,
-			page_size: 50,
+			page_size: 10,
 			page: 1,
 			total_pages: 1,
 			total_items: 0,
@@ -28,17 +29,28 @@ class BlogHome extends Component {
 		}
 	}
 
+	componentDidMount(){
+		if (this.state.loaded) {
+			console.log('app code');
+		}
+	}
+
 	render() {
 
 		if (this.state.loaded) {
-			// console.log(this.state.about)
+			console.log('time to render');
+			 console.log(this.props)
 			let previous_page = this.state.previous_page,
 					next_page = this.state.next_page,
 					total_pages = this.state.total_pages,
 					location = '/',
 					pagination = [],
-					categories = this.state.categories, tags = this.state.tags,
-					about = this.state.about ? this.state.about.excerpt.rendered : this.state.blogInfo.description;
+					categories = this.state.categories,
+					tags = this.state.tags,
+					keywords = _.map(categories,'name')+','+_.map(tags,'name'),
+					about = this.state.blogInfo.description,
+					ishome = this.props.location.pathname === '/' ? true : false
+					// about = this.state.about ? this.state.about.excerpt.rendered : this.state.blogInfo.description;
 
 			if (this.props.params.cat){
 				location = '/'+this.props.params.cat + '/'
@@ -63,7 +75,7 @@ class BlogHome extends Component {
 							<title>{this.state.blogInfo.name}</title>
 							<link rel="canonical" href={base+this.props.location.pathname} />
 							<meta name="description" content={this.state.blogInfo.description} />
-							<meta name="keywords" content={_.map(categories,'name')+','+_.map(tags,'name') } />
+							<meta name="keywords" content={keywords} />
 							<meta property="og:type" content="website" />
 							<meta property="og:title" content={this.state.blogInfo.name} />
 							<meta property="og:description" content={this.state.blogInfo.description} />
@@ -76,45 +88,62 @@ class BlogHome extends Component {
 
 					<div className="App-header">
 
-						<h1 className="App-title"><Link  to="/" title={this.state.blogInfo.name}><img src={logo} className="App-logo" alt="logo" /></Link></h1>
+							<h1 className="App-title">
+							{!ishome && <Link  to="/" title={this.state.blogInfo.name}>
+								<span className="title" dangerouslySetInnerHTML={{__html: this.state.blogInfo.name}}/>
+							</Link>}
 
-						<div className="info" title={this.state.about.name} dangerouslySetInnerHTML={{__html: about}} />
+							{ishome &&	<span className="title" dangerouslySetInnerHTML={{__html: this.state.blogInfo.name}}/>}
+
+						</h1>
+
+						<p className="info" title={this.state.about.name} dangerouslySetInnerHTML={{__html: about}} />
 					</div>
 
 					<div className="posts">
 
 					{this.state.posts.map((post) =>
-						<div name={post.slug} className={`post ${post.categories}`} key={post.slug} id={`post-${post.id}`}>
-							{post.image &&
-							<ProgressiveImage src={post.image.large} placeholder={post.image.small}>
-								{(src, loading) => (
-									<img title="" className={loading ? 'loading': 'loaded'} style={{maxWidth: '100%'}} src={src} alt={post.name}/>
-								)}
-							</ProgressiveImage>
-							}
+						<article name={post.slug} className={`post ${post.categories}`} key={post.slug} id={`post-${post.id}`}>
+							<header>
 
-							<h2 className="title" dangerouslySetInnerHTML={{__html: post.name}} />
-							<div className="content" dangerouslySetInnerHTML={{__html: post.description}} />
-							{post.tags && <div className="tags">
-								{post.tags.map((tag) =>
-									<span href={`#tag-${tag.slug}`} key={`tag-${tag.slug}`}>{tag.name}</span>
-								)}
+									<h2 className="title"  >
+										<Link key={post.categories} to={`/${post.categories}/${post.slug}`} dangerouslySetInnerHTML={{__html: post.name}} />
+									</h2>
+								<figure className="figure">
+									{post.image &&<Link key={post.categories} to={`/${post.categories}/${post.slug}`}>
+										<img  src={post.image.small} alt={post.name}/>
+									</Link>}
+								</figure>
+								<div className="description">
+									<p dangerouslySetInnerHTML={{__html: post.excerpt}} />
 								</div>
-							}
-							<Link key={post.categories} to={`/${post.categories}/${post.slug}`}>{post.name} <i className="fa fa-chevron-left" aria-hidden="true"></i></Link>
-							<hr></hr>
-						</div>
+
+
+
+							</header>
+
+							<footer className="content">
+
+
+
+								<Link key={post.categories} to={`/${post.categories}/${post.slug}`}>{post.name} <i className="fa fa-chevron-left" aria-hidden="true"></i></Link>
+
+
+							</footer>
+						</article>
 
 					)}
 
 					</div>
 
-					<nav>
-						{previous_page && <Link to={`${location}page/${previous_page}`}><i className="fa fa-chevron-left" aria-hidden="true"></i></Link>}
+					<nav className="pagination">
+						{previous_page && <Link className="prev" to={`${location}page/${previous_page}`}> &laquo; </Link>}
+						{!previous_page && <span className="prev"> &laquo; </span>}
 
 						{pagination && pagination}
 
-						{next_page && <Link to={`${location}page/${next_page}`}><i className="fa fa-chevron-right" aria-hidden="true"></i></Link>}
+						{next_page && <Link className="next" to={`${location}page/${next_page}`}> &raquo;</Link>}
+						{!next_page && <span className="next"> &laquo; </span>}
 					</nav>
 				</div>
 			);
@@ -127,7 +156,7 @@ class BlogHome extends Component {
 			)
 		} else {
 			return (
-				<div>
+				<div className="loading">
 					Loading...
 				</div>
 			)
@@ -156,6 +185,9 @@ class BlogHome extends Component {
 
 		});
 	}
+
+
+
 	componentWillReceiveProps(nextProps) {
 		this.setState((prevState, props) => {
 			return {
