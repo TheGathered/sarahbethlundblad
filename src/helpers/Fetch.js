@@ -1,27 +1,63 @@
-//TODO: Fetch Info from WP into sessionStorage
 import WPAPI from 'wpapi';
+
 import {
 	endpoint
 } from '../config';
-const wp = new WPAPI({
-	endpoint: endpoint
-});
-let categories, tags, blogInfo = [];
+
+const wp = new WPAPI({endpoint: endpoint}),
+			caching = 'caches' in window;
+
+let categories, tags, blogInfo, about;
+
+// function cacheJson(key,json){
+// 	return new Promise((resolve, reject) => {
+// 		caches.open(key).then(function(cache) {
+
+// 		});
+// 	})
+// }
+
+// function blogCategories(){
+// 	return new Promise((resolve, reject) => {
+// 		cacheJson.then
+// 	})
+// }
+
+// function blogTags(){
+// 	return new Promise((resolve, reject) => {
+
+// 	})
+// }
+
+// function aboutPage(){
+// 	return new Promise((resolve, reject) => {
+
+// 	})
+// }
+
+// function siteInfo(){
+// 	return new Promise((resolve, reject) => {
+
+// 	})
+// }
 
 export function blogInfo(props, page) {
 	return new Promise((resolve, reject) => {
 		return Promise.all([
 			fetch(endpoint).then(info => info.json()),
 			wp.categories(),
-			wp.tags()
+			wp.tags(),
+			singlePage('about')
 		]).then(responses => {
 			blogInfo = responses[0];
 			categories = responses[1];
 			tags = responses[2];
+			about = responses[3].page;
 			resolve({
 				blogInfo: blogInfo,
 				categories: categories,
 				tags: tags,
+				about: about
 			})
 		}, err => reject(err));
 	});
@@ -41,6 +77,17 @@ export function singlePost(slug) {
 		wp.posts().slug(slug).embed().then(posts=>{
 			resolve({
 				post: posts.map(mapproject)[0],
+				loaded: true
+			})
+		})
+	})
+}
+
+export function singlePage(slug) {
+	return new Promise((resolve, reject) => {
+		wp.pages().slug(slug).embed().then(page=>{
+			resolve({
+				page: page.map(mapPage)[0],
 				loaded: true
 			})
 		})
@@ -94,6 +141,28 @@ function fetchPostByTaxonomySlug(type, page, perpage, taxonomy) {
 	})
 }
 
+function mapPage(response){
+	return {
+		id: response.id,
+		slug: response.slug,
+		// price: response.price || false,
+		image: response._embedded['wp:featuredmedia'] && response._embedded['wp:featuredmedia'][0].title ? {
+			large: response._embedded['wp:featuredmedia'][0].media_details.sizes.full.source_url,
+			small: response._embedded['wp:featuredmedia'][0].media_details.sizes.medium.source_url,
+			title: response._embedded['wp:featuredmedia'][0].title
+		} : false,
+		name: response.title.rendered,
+		description: response.content.rendered,
+		excerpt: response.excerpt,
+		author: response._embedded['author'] ? response._embedded['author'].map(author=>author.name)[0] : false,
+		// categories: TaxNames(categories, response.categories).join() || false,
+		// tags: TaxObj(tags, response.tags) || false,
+		// previous_post: response.previous_post,
+		// next_post: response.next_post
+	}
+}
+
+
 function mapproject(response) {
 	function TaxNames(tax, resp) {
 		return resp.map(o => tax.filter(f => f.id === o)[0]).map(o => o.slug)
@@ -118,7 +187,5 @@ function mapproject(response) {
 		tags: TaxObj(tags, response.tags) || false,
 		previous_post: response.previous_post,
 		next_post: response.next_post
-
-
 	}
 }
