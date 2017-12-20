@@ -4,10 +4,10 @@ import {
 	endpoint
 } from '../config';
 
-const wp = new WPAPI({endpoint: endpoint}),
-			caching = 'caches' in window;
+const wp = new WPAPI({endpoint: endpoint});
+			// caching = 'caches' in window;
 
-let categories, tags, blogInfo, about;
+let categories, tags, info, about;
 
 // function cacheJson(key,json){
 // 	return new Promise((resolve, reject) => {
@@ -49,12 +49,12 @@ export function blogInfo(props, page) {
 			wp.tags(),
 			singlePage('about')
 		]).then(responses => {
-			blogInfo = responses[0];
+			info = responses[0];
 			categories = responses[1];
 			tags = responses[2];
 			about = responses[3].page;
 			resolve({
-				blogInfo: blogInfo,
+				blogInfo: info,
 				categories: categories,
 				tags: tags,
 				about: about

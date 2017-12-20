@@ -1,17 +1,14 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router'
-import { endpoint, base } from '../config';
-import logo from '../logo.png';
-import WPAPI from 'wpapi';
+import { base } from '../config';
+// import logo from '../logo.png';
 import {Helmet} from "react-helmet";
-import {StructuredDataItem} from '../helpers/Microdata'
-import {blogInfo,singlePost} from '../helpers/Fetch'
+import {StructuredDataItem} from '../helpers/Microdata';
+import {blogInfo,singlePost} from '../helpers/Fetch';
+import ReactGA from 'react-ga';
 
 import _ from 'lodash';
-import ProgressiveImage from 'react-progressive-image';
-
-const wp = new WPAPI({ endpoint: endpoint });
-
+// import ProgressiveImage from 'react-progressive-image';
 
 class BlogPost extends Component {
 
@@ -36,11 +33,12 @@ class BlogPost extends Component {
 
 			let previous_page = post.previous_post.slug || false,
 					location = '/',
+					title = post.name+ ' || '+blogInfo.name,
 					next_page = post.next_post.slug || false,
 					categories = this.state.categories, tags = this.state.tags;
 
-			console.log(this.state)
-
+			ReactGA.set({ 'title': title });
+			ReactGA.pageview(window.location.pathname + window.location.search);
 
 			let schema = StructuredDataItem(this.state.post)
 
@@ -49,12 +47,12 @@ class BlogPost extends Component {
 				<div className="App">
 					<Helmet script={[schema]}>
 							<meta charSet="utf-8" />
-							<title>{`${post.name} || ${blogInfo.name}`}</title>
+							<title>{title}</title>
 							<link rel="canonical" href={base+this.props.location.pathname} />
 							<meta name="description" content={post.excerpt} />
 							<meta name="keywords" content={_.map(categories,'name')+','+_.map(tags,'name') } />
 							<meta property="og:type" content="website" />
-							<meta property="og:title" content={`${post.name} || ${blogInfo.name}`} />
+							<meta property="og:title" content={title} />
 							<meta property="og:description" content={post.excerpt} />
 							<meta property="og:url" content={base+this.props.location.pathname} />
 							<meta property="og:image" content={post.image.small} />
@@ -64,8 +62,8 @@ class BlogPost extends Component {
 							{post.next_post && <link rel="next" href={`${location}${post.categories}/${next_page}`} />}
 					</Helmet>
 
-					{post.previous_post && <Link title={post.previous_post.title} rel="prev" href={`${location}${this.state.post.categories}/${previous_page}`} >{post.previous_post.title}<i className="fa fa-chevron-left" aria-hidden="true"></i></Link>}
-					{post.next_post && <Link title={post.next_post.title} rel="next" href={`${location}${this.state.post.categories}/${next_page}`} >{post.next_post.title}<i className="fa fa-chevron-right" aria-hidden="true"></i></Link>}
+					{post.previous_post.id && <Link title={post.previous_post.title} rel="prev" href={`${location}${this.state.post.categories}/${previous_page}`} >{post.previous_post.title}<i className="fa fa-chevron-left" aria-hidden="true"></i></Link>}
+					{post.next_post.id && <Link title={post.next_post.title} rel="next" href={`${location}${this.state.post.categories}/${next_page}`} >{post.next_post.title}<i className="fa fa-chevron-right" aria-hidden="true"></i></Link>}
 				</div>
 			);
 		} else if (this.state.error){
@@ -85,7 +83,7 @@ class BlogPost extends Component {
 	}
 
 	componentWillMount() {
-		console.log(this.props.params.slug)
+		// console.log(this.props.params.slug)
 		this.setState({
 			page: this.props.params.slug,
 			error: false
@@ -116,9 +114,7 @@ class BlogPost extends Component {
 		}, () => {
 			singlePost(this.props.params.slug)
 				.then(posts => this.setState((prevState, props) => posts))
-				.catch(err => this.setState((prevState, props) => {
-					error: err
-				}))
+				.catch(err => this.setState({error: err	}))
 		})
 	}
 

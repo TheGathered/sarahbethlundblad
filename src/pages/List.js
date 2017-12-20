@@ -9,8 +9,6 @@ import {blogInfo,postList} from '../helpers/Fetch'
 import _ from 'lodash';
 import ProgressiveImage from 'react-progressive-image';
 
-
-
 class BlogHome extends Component {
 
 	constructor(props){
@@ -25,21 +23,29 @@ class BlogHome extends Component {
 			posts: [],
 			categories: {},
 			tags: {},
-			blogInfo: {}
+			blogInfo: {},
+			about: {}
 		}
 	}
 
 	render() {
+
 		if (this.state.loaded) {
+			// console.log(this.state.about)
 			let previous_page = this.state.previous_page,
 					next_page = this.state.next_page,
 					total_pages = this.state.total_pages,
 					location = '/',
 					pagination = [],
-					categories = this.state.categories, tags = this.state.tags;
+					categories = this.state.categories, tags = this.state.tags,
+					about = this.state.about ? this.state.about.excerpt.rendered : this.state.blogInfo.description;
 
 			if (this.props.params.cat){
 				location = '/'+this.props.params.cat + '/'
+			}
+
+			if (this.props.pathname === '/'){
+
 			}
 
 
@@ -69,9 +75,10 @@ class BlogHome extends Component {
 					</Helmet>
 
 					<div className="App-header">
-						<img src={logo} className="App-logo" alt="logo" />
-						<h1 className="App-title"><Link  to="/" title={this.state.blogInfo.name}>{this.state.blogInfo.name}</Link></h1>
-						<div className="info" dangerouslySetInnerHTML={{__html: this.state.blogInfo.description}} />
+
+						<h1 className="App-title"><Link  to="/" title={this.state.blogInfo.name}><img src={logo} className="App-logo" alt="logo" /></Link></h1>
+
+						<div className="info" title={this.state.about.name} dangerouslySetInnerHTML={{__html: about}} />
 					</div>
 
 					<div className="posts">
@@ -81,7 +88,7 @@ class BlogHome extends Component {
 							{post.image &&
 							<ProgressiveImage src={post.image.large} placeholder={post.image.small}>
 								{(src, loading) => (
-									<img className={loading ? 'loading': 'loaded'} style={{maxWidth: '100%'}} src={src} alt={post.name}/>
+									<img title="" className={loading ? 'loading': 'loaded'} style={{maxWidth: '100%'}} src={src} alt={post.name}/>
 								)}
 							</ProgressiveImage>
 							}
@@ -159,9 +166,7 @@ class BlogHome extends Component {
 		}, () => {
 			postList(this.state.page, this.state.page_size, this.props.params.cat)
 				.then(posts => this.setState((prevState, props) => posts))
-				.catch(err => this.setState((prevState, props) => {
-					error: err
-				}))
+				.catch(err => this.setState({error: err	}))
 		})
 	}
 

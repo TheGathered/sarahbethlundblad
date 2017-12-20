@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
+import styles from './App.css';
 
 class App extends Component {
   render() {
     return (
-      <div className="App">
+      <div className={styles.App}>
         {/*<div className="App-header">
           <h2>My blog</h2>
         </div>*/}
