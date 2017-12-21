@@ -1,54 +1,23 @@
 import WPAPI from 'wpapi';
 
 import {
-	endpoint
+	endpoint, proxy
 } from '../config';
 
-const wp = new WPAPI({endpoint: endpoint});
-			// caching = 'caches' in window;
+//TODO: use express to run site through proxy and cache
+const wp = new WPAPI({endpoint: proxy});
 
 let categories, tags, info, about;
-
-// function cacheJson(key,json){
-// 	return new Promise((resolve, reject) => {
-// 		caches.open(key).then(function(cache) {
-
-// 		});
-// 	})
-// }
-
-// function blogCategories(){
-// 	return new Promise((resolve, reject) => {
-// 		cacheJson.then
-// 	})
-// }
-
-// function blogTags(){
-// 	return new Promise((resolve, reject) => {
-
-// 	})
-// }
-
-// function aboutPage(){
-// 	return new Promise((resolve, reject) => {
-
-// 	})
-// }
-
-// function siteInfo(){
-// 	return new Promise((resolve, reject) => {
-
-// 	})
-// }
 
 export function blogInfo(props, page) {
 	return new Promise((resolve, reject) => {
 		return Promise.all([
-			fetch(endpoint).then(info => info.json()),
+			fetch(proxy).then(info => info.json()),
 			wp.categories(),
 			// wp.tags(),
 			// singlePage('about')
 		]).then(responses => {
+			console.log(responses[0])
 			info = responses[0];
 			categories = responses[1];
 			// tags = responses[2];
