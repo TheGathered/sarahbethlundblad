@@ -5,7 +5,6 @@ import logo from '../logo.png';
 import {Helmet} from "react-helmet";
 import {StructuredDataCarusel} from '../helpers/Microdata'
 import {blogInfo,postList} from '../helpers/Fetch'
-import imgGlitch from 'img-glitch';
 
 import _ from 'lodash';
 import ProgressiveImage from 'react-progressive-image';
@@ -29,17 +28,15 @@ class BlogHome extends Component {
 		}
 	}
 
-	componentDidMount(){
+	componentDidUpdate(){
 		if (this.state.loaded) {
-			console.log('app code');
+			var elems = document.querySelectorAll('.post');
 		}
 	}
 
 	render() {
 
 		if (this.state.loaded) {
-			console.log('time to render');
-			 console.log(this.props)
 			let previous_page = this.state.previous_page,
 					next_page = this.state.next_page,
 					total_pages = this.state.total_pages,
