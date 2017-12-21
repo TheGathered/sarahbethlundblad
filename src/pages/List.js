@@ -170,6 +170,7 @@ class BlogHome extends Component {
 					this.setState((prevState, props) => info)
 					postList(this.state.page, this.state.page_size, this.props.params.cat)
 						.then(posts => {
+							console.log(info,posts)
 							this.setState((prevState, props) => posts)
 						}, err => {
 							console.error(err);

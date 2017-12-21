@@ -16,14 +16,20 @@ let cache = apicache.options({
 		// redisClient: redis.createClient()
 }).middleware;
 
-app.use(cache('1 day'))
+app.use(cache('1 hour'));
+
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 
 app.get('/wp-json/:type?/:version?/:resource?/:id?', requestProxy({
-		// cache: redis.createClient(),
 		cache: false,
 		url: config.endpoint+"/:type?/:version?/:resource?/:id?",
 		headers: {
-				'Access-Control-Allow-Origin': '*'
+				'Access-Control-Allow-Origin': '*',
+				'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept'
 		}
 }));
 

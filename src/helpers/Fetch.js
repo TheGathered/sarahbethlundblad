@@ -17,7 +17,6 @@ export function blogInfo(props, page) {
 			// wp.tags(),
 			// singlePage('about')
 		]).then(responses => {
-			console.log(responses[0])
 			info = responses[0];
 			categories = responses[1];
 			// tags = responses[2];
