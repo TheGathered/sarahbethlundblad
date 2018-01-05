@@ -7,7 +7,8 @@ import ReactGA from 'react-ga';
 import App from './App';
 import List from './pages/List';
 import SinglePost from './pages/Single';
-// import SinglePage from './pages/Single';
+import PreviewPage from './pages/Single';
+import SinglePage from './pages/Single';
 import NotFound from './components/NotFound';
 
 ReactGA.initialize('UA-1360554-9');
@@ -19,7 +20,8 @@ const Routes = (props) => (
       <Redirect from='/art' to='/art/page/1'/>
       <Redirect from='/illustration' to='/illustration/page/1'/>
       <Redirect from='/graphic-design' to='/graphic-design/page/1'/>
-      <Route path="/:slug" component={SinglePost} />
+      <Route path="/preview" component={PreviewPage} />
+      <Route path="/:SinglePage" component={SinglePage} />
       <Route path="/page/:page" component={List} />
       <Route path="/:cat/:slug" component={SinglePost} />
       <Route path="/:cat/page/:page" component={List} />
