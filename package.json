@@ -27,6 +27,7 @@
     "react-scripts": "1.0.17",
     "react-useragent": "^1.0.0",
     "redis": "^2.8.0",
+    "sitemap": "^1.13.0",
     "webfontloader": "^1.6.28",
     "wpapi": "^1.1.2"
   },
