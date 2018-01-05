@@ -76,7 +76,7 @@
 }
 
 
-.isMobile .mainNav {
+/*.isMobile .mainNav {
   position: fixed;
   top: 0;
   left: 0;
@@ -110,7 +110,7 @@
 .isMobile .mainNav a span {
   display: inline-block;
   vertical-align: middle;
-}
+}*/
 
 .isMobile .post .figure img {
   max-height: 60vh;
