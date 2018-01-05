@@ -1,0 +1,52 @@
+:root {
+	--primary-color: #222;
+	--secondary-color: #ccc;
+}
+
+@keyframes ripple {
+	0% {
+		top: 96px;
+		left: 96px;
+		width: 0;
+		height: 0;
+		opacity: 1;
+	}
+	100% {
+		top: 18px;
+		left: 18px;
+		width: 156px;
+		height: 156px;
+		opacity: 0;
+	}
+}
+
+.loader {
+	position: absolute;
+	top: calc(50% - 100px);
+	left: calc(50% - 100px);
+	/*background: url('../logo.png') center center no-repeat / contain;*/
+}
+
+.loader::before,
+.loader::after {
+	content: '';
+	box-sizing: content-box;
+	position: absolute;
+	border-width: 1px;
+	border-style: solid;
+	opacity: 1;
+	border-radius: 50%;
+	animation: ripple 1.4s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+}
+.loader::before {
+	border-color: var(--primary-color);
+}
+.loader::after {
+	border-color: var(--secondary-color);
+	animation-delay: -0.7s;
+}
+.loader {
+	width: 200px;
+	height: 200px;
+	transform: translate(-100px, -100px) scale(1) translate(100px, 100px);
+}
