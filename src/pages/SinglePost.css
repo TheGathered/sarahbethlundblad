@@ -1,0 +1,26 @@
+.singlePost .figure .image {
+  height: calc(100vh - 30em);
+  background-position: center;
+  /*background-attachment: fixed;*/
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+.singlePost {
+  padding: 3.6em;
+  padding-top: 0;
+}
+
+.singlePost .figure {
+  margin: 10px ;
+  border-bottom: 1px solid;
+  padding: 10px;
+  border: 1px solid;
+}
+
+.singlePost .description {
+  padding: 2em;
+}
+
+.singlePost + .pagination {
+  border-top: none;
+}
