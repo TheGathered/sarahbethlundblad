@@ -10,13 +10,16 @@ const config = require('../src/config');
 // var redis = require('redis');
 var requestProxy = require('express-request-proxy');
 
+console.log(process.env.NODE_ENV !== 'production')
 // require('redis-streams')(redis);
-let cache = apicache.options({
-		debug : true,
+var cache = apicache.options({
+		debug : process.env.NODE_ENV !== 'production',
 		// redisClient: redis.createClient()
 }).middleware;
 
-app.use(cache('1 hour'));
+
+if (process.env.NODE_ENV === 'production') app.use(cache('1 hour'));
+else app.use(cache('1 minute'));
 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -26,11 +29,7 @@ app.use(function(req, res, next) {
 
 app.get('/wp-json/:type?/:version?/:resource?/:id?', requestProxy({
 		cache: false,
-		url: config.endpoint+"/:type?/:version?/:resource?/:id?",
-		headers: {
-				'Access-Control-Allow-Origin': '*',
-				'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept'
-		}
+		url: config.endpoint+"/:type?/:version?/:resource?/:id?"
 }));
 
 // Serve static assets
