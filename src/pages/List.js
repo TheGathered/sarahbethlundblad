@@ -142,7 +142,7 @@ class BlogHome extends Component {
                     <span
                       className="title"
                       dangerouslySetInnerHTML={{
-                        __html: title
+                        __html: this.props.params.cat ? title : this.state.blogInfo.name
                       }}
                     />
                   </Link>
@@ -206,7 +206,7 @@ class BlogHome extends Component {
                         key={post.categories}
                         to={`/${post.categories}/${post.slug}`}
                       >
-                        <img src={post.image.large} alt={post.name} />
+                        <img src={post.image.medium} alt={post.name} />
                       </Link>
                     )}
                   </figure>
@@ -278,8 +278,6 @@ class BlogHome extends Component {
     var page_size = 8;
     if (md.phone()) {
       page_size = 2;
-      require("./mobile.css");
-      window.document.body.className += " isMobile";
     } else if (md.tablet() && window.innerWidth < 1024) page_size = 6;
     else if (md.tablet() && window.innerWidth > 1024) page_size = 8;
     this.setState(

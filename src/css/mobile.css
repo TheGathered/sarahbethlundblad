@@ -57,6 +57,25 @@
 
 */
 
+.isMobile .posts {
+  padding-top: 1em;
+}
+
+.isMobile .pagination .next,
+.isMobile .pagination .prev {
+  font-size: 3.6em;
+  width: 60px;
+  height: calc(100vh - 8rem);
+  top: 8rem;
+  bottom: 0;
+}
+
+.isMobile .pagination .next i,
+.isMobile .pagination .prev i {
+  /*top: calc(50% + 80px);*/
+}
+
+
 .isMobile .mainNav {
   position: fixed;
   top: 0;
@@ -70,6 +89,9 @@
   display: flex;
   align-content: stretch;
   flex-wrap: wrap;
+  transform: translate(-100%, 0%);
+  border: none;
+  display: none;
 }
 
 .isMobile .mainNav a {
@@ -100,3 +122,31 @@
     left: 0;
     right: 0;
   }
+
+.isMobile .singlePost .figure {
+    border: none;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+@media(orientation: portrait){
+
+}
+
+@media(orientation: landscape){
+  .isMobile .posts .figure {
+    padding: 5px;
+  }
+  .isMobile .posts {
+    padding: 1em 3.6em 0;
+    max-height: calc(100vh - 12em);
+  }
+  .isMobile .post .figure img {
+    max-height: 48vh;
+  }
+
+  .isMobile .singlePost .image  {
+    min-height: calc(100vh - 14em);
+    height: auto;
+  }
+}

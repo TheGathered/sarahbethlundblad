@@ -10,6 +10,7 @@
 /* apply a natural box layout model to all elements, but allowing components to change */
 html {
   box-sizing: border-box;
+  font-size: 62.5%;
 }
 *, *:before, *:after {
   box-sizing: inherit;
@@ -22,7 +23,6 @@ html {
 }
 
 body {
-  font-size: 62.5%;
   color: var(--primary-color);
   font-family: 'Source Code Pro', monospace;
   font-weight: 100;

@@ -149,7 +149,8 @@ function mapproject(response) {
 		price: response.price || false,
 		image: response._embedded['wp:featuredmedia'] && response._embedded['wp:featuredmedia'][0].title ? {
 			large: response._embedded['wp:featuredmedia'][0].media_details.sizes.full.source_url,
-			small: response._embedded['wp:featuredmedia'][0].media_details.sizes.medium.source_url,
+			medium: response._embedded['wp:featuredmedia'][0].media_details.sizes.medium_large.source_url,
+			small: response._embedded['wp:featuredmedia'][0].media_details.sizes.thumbnail.source_url,
 			title: response._embedded['wp:featuredmedia'][0].title
 		} : false,
 		name: response.title.rendered,
