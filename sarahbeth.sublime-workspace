@@ -4,6 +4,82 @@
 		"selected_items":
 		[
 			[
+				"he",
+				"min-height"
+			],
+			[
+				"ac",
+				"background"
+			],
+			[
+				"mar",
+				"margin-top"
+			],
+			[
+				"text",
+				"text-decoration"
+			],
+			[
+				"pad",
+				"padding"
+			],
+			[
+				"bor",
+				"border-radius"
+			],
+			[
+				"padd",
+				"padding"
+			],
+			[
+				"req",
+				"require"
+			],
+			[
+				"con",
+				"const"
+			],
+			[
+				"po",
+				"pointer-events"
+			],
+			[
+				"max",
+				"max-width"
+			],
+			[
+				"is",
+				"ishome"
+			],
+			[
+				"font",
+				"font-size"
+			],
+			[
+				"fnt",
+				"font-size"
+			],
+			[
+				"ma",
+				"max-height"
+			],
+			[
+				"bac",
+				"background-color"
+			],
+			[
+				"ine",
+				"inline-block"
+			],
+			[
+				"sing",
+				"singlePage"
+			],
+			[
+				"eme",
+				"_embedded"
+			],
+			[
 				"class",
 				"className"
 			],
@@ -20,24 +96,12 @@
 				"response"
 			],
 			[
-				"con",
-				"config"
-			],
-			[
 				"bacgrond",
 				"background-color"
 			],
 			[
 				"Dist",
 				"DIST_DIR"
-			],
-			[
-				"mar",
-				"margin-bottom"
-			],
-			[
-				"pad",
-				"padding"
 			],
 			[
 				"side",
@@ -50,10 +114,6 @@
 			[
 				"MEDIUM",
 				"medium-4"
-			],
-			[
-				"bac",
-				"background-position"
 			],
 			[
 				"card",
@@ -80,10 +140,6 @@
 				"medium-6"
 			],
 			[
-				"text",
-				"text-align"
-			],
-			[
 				"no",
 				"nowrap"
 			],
@@ -98,10 +154,6 @@
 			[
 				"par",
 				"parent"
-			],
-			[
-				"bor",
-				"border-radius"
 			],
 			[
 				"fon",
@@ -143,70 +195,7 @@
 			"file": "src/pages/List.js",
 			"settings":
 			{
-				"buffer_size": 5032,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "/Users/jim/.bash_profile",
-			"settings":
-			{
-				"buffer_size": 529,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"contents": "scp -i ~/Sites/jimlundblad.pem -r ubuntu@52.209.35.22:/home/ubuntu/sites/private/cms.sarah-beth.net/wp-content/uploads/2017 /Users/jim/Desktop\n\n\nscp -i ~/Sites/jimlundblad.pem -r /Users/jim/Desktop/2017 ubuntu@52.209.35.22:/home/ubuntu/sites/private/cms.sarah-beth.net/wp-content/uploads ",
-			"settings":
-			{
-				"buffer_size": 288,
-				"line_ending": "Unix",
-				"name": "scp -i ~/Sites/jimlundblad.pem -r ubuntu@52.209.35"
-			}
-		},
-		{
-			"contents": "# for f in \"$@\"\n# do\n#   echo \"$f\"\n# # exiftool -artist=\"Sarah Beth Lundblad\" -copyright=\"2017 Sarah Beth Lundblad\" \"$f\"\n# done\n\n# FILES=./*\n# for f in $FILES\n# do\n\n# done\n\n\n\nfor D in `find . -type d`\ndo\n    echo \"$D\"\ndone",
-			"file": "/Users/jim/Desktop/2017/07/exif.sh",
-			"file_size": 222,
-			"file_write_time": 131576732496574698,
-			"settings":
-			{
-				"buffer_size": 222,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"contents": "",
-			"settings":
-			{
-				"buffer_size": 0,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "/Users/jim/Desktop/2017/exif.sh",
-			"settings":
-			{
-				"buffer_size": 188,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "src/pages/Single.js",
-			"settings":
-			{
-				"buffer_size": 3714,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "src/helpers/Microdata.js",
-			"settings":
-			{
-				"buffer_size": 856,
+				"buffer_size": 6474,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -215,7 +204,52 @@
 			"file": "src/helpers/Fetch.js",
 			"settings":
 			{
-				"buffer_size": 3605,
+				"buffer_size": 4850,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "server/app.js",
+			"settings":
+			{
+				"buffer_size": 1190,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/routes.js",
+			"settings":
+			{
+				"buffer_size": 1081,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/pages/Single.js",
+			"settings":
+			{
+				"buffer_size": 3788,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/App.css",
+			"settings":
+			{
+				"buffer_size": 5066,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/helpers/Microdata.js",
+			"settings":
+			{
+				"buffer_size": 1340,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -262,24 +296,37 @@
 	"expanded_folders":
 	[
 		"/Users/jim/Sites/sarahbeth",
-		"/Users/jim/Sites/sarahbeth/src",
-		"/Users/jim/Sites/sarahbeth/src/helpers",
-		"/Users/jim/Sites/sarahbeth/src/pages",
-		"/Users/jim/Sites/sarahbeth/src/styles",
-		"/Users/jim/Sites/sarahbeth/wordpress",
-		"/Users/jim/Sites/sarahbeth/wordpress/sarahbeth"
+		"/Users/jim/Sites/sarahbeth/server",
+		"/Users/jim/Sites/sarahbeth/wordpress"
 	],
 	"file_history":
 	[
-		"/Users/jim/Desktop/2017/exif.sh",
-		"/Users/jim/Sites/sarahbeth/src/routes.js",
-		"/Users/jim/.bash_profile",
-		"/Users/jim/Sites/sarahbeth/src/config.js",
+		"/Users/jim/Sites/sarahbeth/wordpress/sarahbeth/style.css",
+		"/Users/jim/Sites/sarahbeth/wordpress/sarahbeth/funtions.php",
+		"/Users/jim/Sites/sarahbeth/src/components/NotFound.js",
 		"/Users/jim/Sites/sarahbeth/src/helpers/Fetch.js",
-		"/Users/jim/Sites/sarahbeth/src/pages/Single.js",
-		"/Users/jim/Sites/sarahbeth/src/helpers/LocalStore.js",
 		"/Users/jim/Sites/sarahbeth/src/App.js",
+		"/Users/jim/Sites/sarahbeth/server/app.js",
+		"/Users/jim/Sites/sarahbeth/src/App.css",
+		"/Users/jim/Sites/sarahbeth/src/pages/List.js",
+		"/Users/jim/Sites/sarahbeth/src/config.js",
+		"/Users/jim/Sites/sarahbeth/src/routes.js",
+		"/Users/jim/Sites/sarahbeth/.babelrc",
+		"/Users/jim/Sites/sarahbeth/run.sh",
 		"/Users/jim/Sites/sarahbeth/package.json",
+		"/Users/jim/Desktop/untitled.js",
+		"/Users/jim/Sites/sarahbeth/src/pages/Single.js",
+		"/Users/jim/.bash_profile",
+		"/Users/jim/Sites/sarahbeth/src/sitemap-builder.js",
+		"/Users/jim/Sites/sarahbeth/src/config.js.bak",
+		"/Users/jim/Sites/sarahbeth/src/cache/myContentReducer.js",
+		"/Users/jim/Sites/sarahbeth/src/helpers/actions.js",
+		"/Users/jim/Sites/sarahbeth/src/helpers/asyncActionCreator.js",
+		"/Users/jim/Sites/sarahbeth/src/helpers/syncActionCreators.js",
+		"/Users/jim/Desktop/2017/07/exif.sh",
+		"/Users/jim/Desktop/2017/exif.sh",
+		"/Users/jim/Sites/sarahbeth/src/helpers/Microdata.js",
+		"/Users/jim/Sites/sarahbeth/src/helpers/LocalStore.js",
 		"/Users/jim/Sites/sarahbeth/.gitignore",
 		"/Users/jim/Downloads/authors.txt",
 		"/Users/jim/Sites/sarahbeth/sarahbeth.sublime-project",
@@ -292,7 +339,6 @@
 		"/Users/jim/Sites/sarahbeth/src/car/car.component.jsx",
 		"/Users/jim/Sites/sarahbeth/src/common/home.component.jsx",
 		"/Users/jim/Sites/sarahbeth/src/common/about.component.jsx",
-		"/Users/jim/Sites/sarahbeth/.babelrc",
 		"/Users/jim/Sites/sarahbeth/src/App.js.bak",
 		"/Users/jim/Sites/sarahbeth/config.js",
 		"/Users/jim/Sites/sarahbeth/.sublime-project",
@@ -382,19 +428,7 @@
 		"/Users/jim/Sites/the-partnership/frontend/src/scss/the-partnership/_buttons.scss",
 		"/Users/jim/Sites/the-partnership/frontend/src/scss/the-partnership/_general.scss",
 		"/Users/jim/Sites/the-partnership/frontend/src/scss/the-partnership/_title-bar.scss",
-		"/Users/jim/Sites/the-partnership/frontend/views/partials/menus/top-menu.handlebars",
-		"/Users/jim/Sites/the-partnership/frontend/views/partials/sidebars/pulse.handlebars",
-		"/Users/jim/Sites/the-partnership/frontend/views/partials/components/item_list.handlebars",
-		"/Users/jim/Sites/the-partnership/frontend/run.sh",
-		"/Users/jim/Sites/the-partnership/frontend/views/error.handlebars",
-		"/Users/jim/Sites/the-partnership/frontend/views/partials/sidebars/twitter.handlebars",
-		"/Users/jim/Sites/the-partnership/frontend/public/favicon.ico",
-		"/Users/jim/Sites/the-partnership/frontend/views/page.handlebars",
-		"/Users/jim/Sites/the-partnership/frontend/views/partials/type/childpages.handlebars",
-		"/Users/jim/Sites/the-partnership/frontend/views/partials/twitter.handlebars",
-		"/Users/jim/Sites/the-partnership/frontend/app/routes/index.js",
-		"/Users/jim/Sites/the-partnership/virtualbox/scripts/config.conf",
-		"/Users/jim/Sites/the-partnership/readme.md"
+		"/Users/jim/Sites/the-partnership/frontend/views/partials/menus/top-menu.handlebars"
 	],
 	"find":
 	{
@@ -412,6 +446,21 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"header",
+			"solid #",
+			"1px ",
+			"border: ",
+			":hover",
+			"content",
+			"console",
+			"title=",
+			"solid #AAA",
+			"solid #999",
+			"1px #999",
+			"border",
+			"tags",
+			"title",
+			"console",
 			"ItemList",
 			"_",
 			"categories",
@@ -423,6 +472,9 @@
 		"regex": false,
 		"replace_history":
 		[
+			"solid #CCC",
+			"solid #AAA",
+			"1px #AAA"
 		],
 		"reverse": false,
 		"show_context": true,
@@ -433,7 +485,7 @@
 	"groups":
 	[
 		{
-			"selected": 4,
+			"selected": 2,
 			"sheets":
 			[
 				{
@@ -442,15 +494,44 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 5032,
+						"buffer_size": 6474,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2394,
-								2394
+								5527,
+								5527
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Babel/JavaScript (Babel).tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 1.0,
+						"translation.y": 2672.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "src/helpers/Fetch.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4850,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								205,
+								205
 							]
 						],
 						"settings":
@@ -459,46 +540,47 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 669.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 5,
+					"stack_index": 3,
 					"type": "text"
 				},
 				{
-					"buffer": 1,
-					"file": "/Users/jim/.bash_profile",
+					"buffer": 2,
+					"file": "server/app.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 529,
+						"buffer_size": 1190,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								145,
-								99
+								970,
+								970
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/ShellScript/Shell-Unix-Generic.sublime-syntax"
+							"syntax": "Packages/Babel/JavaScript (Babel).tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 16.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 4,
+					"stack_index": 0,
 					"type": "text"
 				},
 				{
-					"buffer": 2,
+					"buffer": 3,
+					"file": "src/routes.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 288,
+						"buffer_size": 1081,
 						"regions":
 						{
 						},
@@ -506,41 +588,14 @@
 						[
 							[
 								288,
-								145
+								288
 							]
 						],
 						"settings":
 						{
-							"auto_name": "scp -i ~/Sites/jimlundblad.pem -r ubuntu@52.209.35",
-							"syntax": "Packages/Text/Plain text.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 2,
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "/Users/jim/Desktop/2017/07/exif.sh",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 222,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								222,
-								175
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/ShellScript/Shell-Unix-Generic.sublime-syntax"
+							"syntax": "Packages/Babel/JavaScript (Babel).tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -551,75 +606,19 @@
 				},
 				{
 					"buffer": 4,
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 0,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"auto_name": "",
-							"syntax": "Packages/Text/Plain text.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				},
-				{
-					"buffer": 5,
-					"file": "/Users/jim/Desktop/2017/exif.sh",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 188,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								44,
-								44
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/ShellScript/Shell-Unix-Generic.sublime-syntax"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 3,
-					"type": "text"
-				},
-				{
-					"buffer": 6,
 					"file": "src/pages/Single.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 3714,
+						"buffer_size": 3788,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2134,
-								2134
+								2991,
+								2991
 							]
 						],
 						"settings":
@@ -628,27 +627,57 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 160.0,
+						"translation.y": 997.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 6,
+					"stack_index": 5,
 					"type": "text"
 				},
 				{
-					"buffer": 7,
+					"buffer": 5,
+					"file": "src/App.css",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 5066,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								4477,
+								4477
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/LESS/LESS.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 4525.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
 					"file": "src/helpers/Microdata.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 856,
+						"buffer_size": 1340,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								775,
-								775
+								715,
+								715
 							]
 						],
 						"settings":
@@ -657,39 +686,10 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 116.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 7,
-					"type": "text"
-				},
-				{
-					"buffer": 8,
-					"file": "src/helpers/Fetch.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 3605,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								3396,
-								3396
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Babel/JavaScript (Babel).tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 3.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 8,
+					"stack_index": 6,
 					"type": "text"
 				}
 			]
