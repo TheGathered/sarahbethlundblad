@@ -142,7 +142,7 @@ class BlogHome extends Component {
                     <span
                       className="title"
                       dangerouslySetInnerHTML={{
-                        __html: this.state.blogInfo.name
+                        __html: title
                       }}
                     />
                   </Link>
