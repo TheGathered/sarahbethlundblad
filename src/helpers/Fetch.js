@@ -1,13 +1,15 @@
 import WPAPI from 'wpapi';
 
 import {
-	endpoint, proxy
+	 proxy
 } from '../config';
 
 //TODO: use express to run site through proxy and cache
 const wp = new WPAPI({endpoint: proxy});
 
-let categories, tags, info, about;
+let categories, info;
+
+// let tags, about
 
 export function blogInfo(props, page) {
 	return new Promise((resolve, reject) => {
@@ -70,7 +72,7 @@ function fetchPosts(type, page, perpage) {
 			}
 			resolve({
 				posts: posts.map(mapproject),
-				total_pages: posts._paging.totalPages,
+				total_pages: parseInt(posts._paging.totalPages,10),
 				next_page: page < posts._paging.totalPages ? parseInt(page, 10) + 1 : false,
 				previous_page: page > 1 ? parseInt(page, 10) - 1 : false,
 				loaded: true
@@ -94,7 +96,7 @@ function fetchPostByTaxonomySlug(type, page, perpage, taxonomy) {
 				}
 				let mapped = {
 					posts: posts.map(mapproject),
-					total_pages: posts._paging.totalPages,
+					total_pages: parseInt(posts._paging.totalPages,10),
 					next_page: page < posts._paging.totalPages ? parseInt(page, 10) + 1 : false,
 					previous_page: page > 1 ? parseInt(page, 10) - 1 : false,
 					loaded: true
@@ -130,14 +132,17 @@ function mapPage(response){
 	}
 }
 
+function siblingPosts(obj){
+	return {
+		path: [...obj.category.map(cat => cat.slug),obj.slug].join('/'),
+		desc: obj.category.map(cat => cat.description).join(','),
+		slug: obj.slug,
+		title: obj.title,
+		id: obj.id
+	}
+}
 
 function mapproject(response) {
-	function TaxNames(tax, resp) {
-		return resp.map(o => tax.filter(f => f.id === o)[0]).map(o => o.slug)
-	}
-	function TaxObj(tax, resp) {
-		return [].concat(...resp.map(o => tax.filter(f => f.id === o)))
-	}
 	return {
 		id: response.id,
 		slug: response.slug,
@@ -151,9 +156,12 @@ function mapproject(response) {
 		description: response.content.rendered,
 		excerpt: response.excerpt,
 		author: response._embedded['author'] ? response._embedded['author'].map(author=>author.name)[0] : false,
-		categories: TaxNames(categories, response.categories).join() || false,
+		// categories: response.categories.map(o => categories.filter(f => f.id === o)[0]).map(o => o.slug).join() || false,
+		categories: response.category.map(cat=> cat.slug).join(),
+		type: response.category.map(cat=> cat.description).join(),
 		// tags: TaxObj(tags, response.tags) || false,
-		previous_post: response.previous_post,
-		next_post: response.next_post
+		previous_post: response.previous_post.id && siblingPosts(response.previous_post),
+		next_post: response.next_post.id && siblingPosts(response.next_post),
+		for_sale: response.acf.for_sale || false
 	}
 }
