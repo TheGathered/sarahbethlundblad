@@ -7,10 +7,11 @@ const sm = require("sitemap");
 
 const app = express();
 const config = require("../src/config");
-const robots = require('express-robots');
 
 // var redis = require('redis');
 var requestProxy = require("express-request-proxy");
+
+var expressRobotsMiddleware = require('express-robots-middleware');
 
 console.log(process.env.NODE_ENV !== "production");
 // require('redis-streams')(redis);
@@ -30,10 +31,19 @@ var sitemap = sm.createSitemap({
   ]
 });
 
-if (process.env.NODE_ENV === "production") app.use(cache("1 hour"));
-else app.use(cache("1 minute"));
+if (process.env.NODE_ENV === "production") app.use(cache("1 day"));
+else app.use(cache("30 seconds"));
 
-app.use(robots({UserAgent: '*', Allow: '/', Disallow: '/wp-json/'}))
+const robotsMiddleware = expressRobotsMiddleware({
+  UserAgent: '*',
+  Disallow: ['/private'],
+  Allow: '/',
+  CrawlDelay: '5'
+});
+
+app.get('/robots.txt', robotsMiddleware);
+
+
 
 app.get("/sitemap.xml", function(req, res) {
   sitemap.toXML(function(err, xml) {
