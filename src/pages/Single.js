@@ -118,9 +118,15 @@ class BlogPost extends Component {
 
 
               {post.image && (
-                <ProgressiveImage src={post.image.large} placeholder={post.image.small}>
-                  {(src) => <img src={src} alt={title} />}
-                </ProgressiveImage>
+
+                <div className="image small"  style={{backgroundImage: 'url(' + post.image.small + ')'}} >
+                  <div className="imageSize" style={{paddingBottom: post.image.aspect}} />
+                  <div className="image large"  style={{backgroundImage: 'url(' + post.image.large + ')'}} >
+                  </div>
+                </div>
+                // <ProgressiveImage src={post.image.large} placeholder={post.image.small}>
+                //   {(src) => <img src={src} alt={title} />}
+                // </ProgressiveImage>
               )}
             </figure>
             <div className="description" dangerouslySetInnerHTML={{ __html: post.description }} >

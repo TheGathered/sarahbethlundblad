@@ -151,7 +151,8 @@ function mapproject(response) {
 			large: response._embedded['wp:featuredmedia'][0].media_details.sizes.full.source_url,
 			medium: response._embedded['wp:featuredmedia'][0].media_details.sizes.medium.source_url,
 			small: response._embedded['wp:featuredmedia'][0].media_details.sizes.thumbnail.source_url,
-			title: response._embedded['wp:featuredmedia'][0].title
+			title: response._embedded['wp:featuredmedia'][0].title,
+			aspect: Math.round((response._embedded['wp:featuredmedia'][0].media_details.height/response._embedded['wp:featuredmedia'][0].media_details.width)*100)+'%'
 		} : false,
 		name: response.title.rendered,
 		description: response.content.rendered,

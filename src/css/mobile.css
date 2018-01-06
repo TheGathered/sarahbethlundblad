@@ -129,6 +129,14 @@
     padding-bottom: 0;
   }
 
+.isMobile .singlePost .figure img {
+  max-width: 100%;
+  height: calc(100vh - 25em);
+  min-height: 0;
+  height: auto;
+  display: inline-block;
+}
+
 @media(orientation: portrait){
 
 }

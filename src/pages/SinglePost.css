@@ -1,9 +1,22 @@
 .singlePost .figure .image {
-  height: calc(100vh - 30em);
+  max-height: calc(100vh - 22.5em);
   background-position: center;
-  /*background-attachment: fixed;*/
+  /*background-attachment: local;*/
   background-size: contain;
   background-repeat: no-repeat;
+  position: relative;
+  overflow: hidden;
+}
+
+.singlePost .figure .image .image {
+/*  display: block;
+  padding-bottom: attr(data-aspect);
+  content: '';*/
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 .singlePost {
   padding: 4.6em;
@@ -13,26 +26,31 @@
 .singlePost .figure {
   margin: 0 ;
   margin-top: 3.6em;
-  border-bottom: 1px solid;
+  /*border-bottom: 1px solid;*/
   padding: 1em;
-  border: 1px solid;
+  /*border: 1px solid;*/
+  text-align: center;
 }
 
-.singlePost .figure img {
-  width: 100%;
-  height: auto;
-}
+/*.singlePost .figure img {
+  width: auto;
+  height: calc(100vh - 25em);
+  min-height: 50em;
+  display: inline-block;
+}*/
 
 .singlePost .description {
+  text-align: center;
   padding: 1em;
 }
 
 .singlePost + .pagination {
+
   border-top: none;
 }
 
 .description  img{
-  width: 100%;
+  width: 25%;
   height: auto;
-  display: block;
+  display: inline-block;
 }

@@ -3,7 +3,7 @@ add_theme_support( 'post-thumbnails' );
 
 function sbl_prepare_rest($data, $post, $request){
 	$_data = $data->data;
-	// Next / Prev post
+  // TODO: set another nexts but withing category, and load that from cookie
 	$nextPost = get_adjacent_post(false, '', true );
 	$prevPost = get_adjacent_post(false, '', false );
   $_data['category'] = get_the_category();

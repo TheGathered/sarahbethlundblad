@@ -12,7 +12,7 @@ var requestProxy = require("express-request-proxy");
 
 var expressRobotsMiddleware = require('express-robots-middleware');
 
-console.log(process.env.NODE_ENV !== "production");
+console.log(process.env.NODE_ENV);
 // require('redis-streams')(redis);
 var cache = apicache.options({
   debug: process.env.NODE_ENV !== "production"
