@@ -13,7 +13,7 @@ import Loading from "../components/Loading";
 import _ from "lodash";
 
 import './SinglePost.css';
-// import ProgressiveImage from 'react-progressive-image';
+import ProgressiveImage from 'react-progressive-image';
 
 class BlogPost extends Component {
   constructor(props) {
@@ -114,13 +114,12 @@ class BlogPost extends Component {
             id={`post-${post.id}`}
           >
             <figure className="figure">
+
+
               {post.image && (
-                <div
-                  className="image"
-                  style={{
-                    backgroundImage: 'url(' + post.image.large + ')',
-                  }}
-                />
+                <ProgressiveImage src={post.image.large} placeholder={post.image.small}>
+                  {(src) => <img src={src} alt={title} />}
+                </ProgressiveImage>
               )}
             </figure>
             <div className="description" dangerouslySetInnerHTML={{ __html: post.description }} >

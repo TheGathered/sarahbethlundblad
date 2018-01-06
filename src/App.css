@@ -183,6 +183,7 @@ h3 {
   font-weight: 100;
   width: 42px;
   overflow: visible;
+  color: var(--secondary-color);
 }
 
 .pagination  .prev i,

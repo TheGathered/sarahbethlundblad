@@ -6,21 +6,33 @@
   background-repeat: no-repeat;
 }
 .singlePost {
-  padding: 3.6em;
+  padding: 4.6em;
   padding-top: 0;
 }
 
 .singlePost .figure {
-  margin: 10px ;
+  margin: 0 ;
+  margin-top: 3.6em;
   border-bottom: 1px solid;
-  padding: 10px;
+  padding: 1em;
   border: 1px solid;
 }
 
+.singlePost .figure img {
+  width: 100%;
+  height: auto;
+}
+
 .singlePost .description {
-  padding: 2em;
+  padding: 1em;
 }
 
 .singlePost + .pagination {
   border-top: none;
+}
+
+.description  img{
+  width: 100%;
+  height: auto;
+  display: block;
 }

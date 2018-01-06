@@ -65,8 +65,8 @@
 .isMobile .pagination .prev {
   font-size: 3.0em;
   /*width: 42px;*/
-  height: calc(100vh - 8rem);
-  top: 8rem;
+  height: calc(100vh - 12rem);
+  top: 12rem;
   bottom: 0;
 }
 

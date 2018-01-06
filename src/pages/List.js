@@ -18,7 +18,10 @@ import Loading from "../components/Loading";
 
 import _ from "lodash";
 
+import ProgressiveImage from 'react-progressive-image';
+
 import "./PostList.css";
+
 
 var MobileDetect = require("mobile-detect");
 var md = new MobileDetect(window.navigator.userAgent);
@@ -206,7 +209,9 @@ class BlogHome extends Component {
                         key={post.categories}
                         to={`/${post.categories}/${post.slug}`}
                       >
-                        <img src={post.image.medium} alt={post.name} />
+                      <ProgressiveImage src={post.image.medium} placeholder={post.image.small}>
+                            {(src) => <img src={src} alt={post.name} />}
+                          </ProgressiveImage>
                       </Link>
                     )}
                   </figure>
