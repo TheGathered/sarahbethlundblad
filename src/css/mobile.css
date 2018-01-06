@@ -63,8 +63,8 @@
 
 .isMobile .pagination .next,
 .isMobile .pagination .prev {
-  font-size: 3.6em;
-  width: 60px;
+  font-size: 3.0em;
+  /*width: 42px;*/
   height: calc(100vh - 8rem);
   top: 8rem;
   bottom: 0;
