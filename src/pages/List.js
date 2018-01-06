@@ -110,6 +110,9 @@ class BlogHome extends Component {
             ]}
           >
             <meta charSet="utf-8" />
+            <meta name="theme-color" content="#ffffff" />
+
+
             <title>{title}</title>
             <link rel="canonical" href={base + this.props.location.pathname} />
             <meta
