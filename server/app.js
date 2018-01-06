@@ -2,7 +2,6 @@
 const express = require("express");
 const path = require("path");
 const apicache = require("apicache");
-const redis = require("redis");
 const sm = require("sitemap");
 
 const app = express();
