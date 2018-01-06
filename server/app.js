@@ -7,6 +7,7 @@ const sm = require("sitemap");
 
 const app = express();
 const config = require("../src/config");
+const robots = require('express-robots');
 
 // var redis = require('redis');
 var requestProxy = require("express-request-proxy");
@@ -31,6 +32,8 @@ var sitemap = sm.createSitemap({
 
 if (process.env.NODE_ENV === "production") app.use(cache("1 hour"));
 else app.use(cache("1 minute"));
+
+app.use(robots({UserAgent: '*', Allow: '/', Disallow: '/wp-json/'}))
 
 app.get("/sitemap.xml", function(req, res) {
   sitemap.toXML(function(err, xml) {
