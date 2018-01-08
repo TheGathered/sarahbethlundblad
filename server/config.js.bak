@@ -1,0 +1,7 @@
+module.exports = {
+  'endpoint': '../wp-json',
+  'wpAuth': {
+    'user' : '',
+    'pass' : ''
+  }
+}

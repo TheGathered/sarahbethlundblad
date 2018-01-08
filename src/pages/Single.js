@@ -25,7 +25,8 @@ class BlogPost extends Component {
       post: [],
       categories: {},
       tags: {},
-      blogInfo: {}
+      blogInfo: {},
+      preview: false
     };
   }
 
@@ -56,6 +57,7 @@ class BlogPost extends Component {
             <title>{title}</title>
             <link rel="canonical" href={base + this.props.location.pathname} />
             <meta name="description" content={post.excerpt} />
+            {this.state.preview && <meta name="robots" content="noindex" /> }
             <meta
               name="keywords"
               content={_.map(categories, "name") + "," + _.map(tags, "name")}
@@ -168,20 +170,22 @@ class BlogPost extends Component {
   }
 
   componentWillMount() {
-    // console.log(this.props.params.slug)
-    // if (this.props.params.SinglePage) {
-    //   console.log("this is a page");
-    // }
+    var page = this.props.params.slug || false, preview = false;
+
+    if(!page && this.props.route.path === '/preview' && this.props.location.query.p) {
+      page = parseInt(this.props.location.query.p, 10);
+      preview = true;
+    }
     this.setState(
       {
-        page: this.props.params.slug,
+        page: page,
         error: false
       },
       function() {
         blogInfo().then(
           info => {
             this.setState((prevState, props) => info);
-            singlePost(this.props.params.slug).then(
+            singlePost(page).then(
               posts => {
                 this.setState((prevState, props) => posts);
               },

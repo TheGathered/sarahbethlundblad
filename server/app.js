@@ -3,17 +3,16 @@ const express = require("express");
 const path = require("path");
 const apicache = require("apicache");
 const sm = require("sitemap");
-
 const app = express();
-const config = require("../src/config");
-
-// var redis = require('redis');
-var requestProxy = require("express-request-proxy");
-
-var expressRobotsMiddleware = require('express-robots-middleware');
+const config = require("./config");
+const requestProxy = require("express-request-proxy");
+const expressRobotsMiddleware = require("express-robots-middleware");
+const basicAuth = require("basic-auth");
+const WPAPI = require("wpapi");
 
 console.log(process.env.NODE_ENV);
-// require('redis-streams')(redis);
+// var redis = require("redis");
+// require("redis-streams")(redis);
 var cache = apicache.options({
   debug: process.env.NODE_ENV !== "production"
   // redisClient: redis.createClient()
@@ -30,19 +29,43 @@ var sitemap = sm.createSitemap({
   ]
 });
 
+var auth = {
+  users: {
+    sarah: "dt99sbh"
+  }
+};
+
 if (process.env.NODE_ENV === "production") app.use(cache("1 day"));
 else app.use(cache("30 seconds"));
 
 const robotsMiddleware = expressRobotsMiddleware({
-  UserAgent: '*',
-  Disallow: ['/private'],
-  Allow: '/',
-  CrawlDelay: '5'
+  UserAgent: "*",
+  Disallow: ["/preview","/wp-json"],
+  Noindex: ["/preview","/wp-json"],
+  Allow: "/",
+  CrawlDelay: "5"
 });
 
-app.get('/robots.txt', robotsMiddleware);
+var auth = function(req, res, next) {
+  function unauthorized(res) {
+    res.set("WWW-Authenticate", "Basic realm=Authorization Required");
+    return res.send(401);
+  }
 
+  var user = basicAuth(req);
 
+  if (!user || !user.name || !user.pass) {
+    return unauthorized(res);
+  }
+
+  if (user.name === config.httpAuth.user && user.pass === config.httpAuth.pass) {
+    return next();
+  } else {
+    return unauthorized(res);
+  }
+};
+
+app.get("/robots.txt", robotsMiddleware);
 
 app.get("/sitemap.xml", function(req, res) {
   sitemap.toXML(function(err, xml) {
@@ -55,12 +78,43 @@ app.get("/sitemap.xml", function(req, res) {
 });
 
 app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
-  );
+  var allowedOrigins = ["https://sarah-beth.co.uk", "https://sarah-beth.net"];
+  var origin = req.headers.origin;
+  if (allowedOrigins.indexOf(origin) > -1) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
+  }
+  if (process.env.NODE_ENV !== "production")
+    res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "GET, OPTIONS");
+  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  res.header("Access-Control-Allow-Credentials", true);
   next();
+});
+
+//TODO: figure out how to use Nounce cookies for cross domain CORS
+
+app.get("/wp-json/preview", (req, res) => {
+  wp = new WPAPI({
+    endpoint: config.endpoint,
+    auth: false
+  });
+  if (!req.query.p) return res.status(400);
+  return wp
+    .posts()
+    .id(req.query.p)
+    .auth({ username: config.wpAuth.user, password: config.wpAuth.pass })
+    .param({
+      status: "all"
+    })
+    .embed()
+    .then(
+      posts => {
+        return res.json({ posts });
+      },
+      err => {
+        return res.status(err.data.status);
+      }
+    );
 });
 
 app.get(
@@ -73,6 +127,11 @@ app.get(
 
 // Serve static assets
 app.use(express.static(path.resolve(__dirname, "..", "build")));
+
+app.get("/preview", (req, res) => {
+  console.log('referer',req.headers.referer);
+  res.sendFile(path.resolve(__dirname, "..", "build", "index.html"));
+});
 
 app.get("*", (req, res) => {
   res.sendFile(path.resolve(__dirname, "..", "build", "index.html"));
