@@ -87,7 +87,7 @@ app.use(function(req, res, next) {
 
 app.get("/api/preview", (req, res) => {
   wp = new WPAPI({
-    endpoint: config.endpoint,
+    endpoint: config.preview,
     auth: false
   });
   if (!req.query.p) return res.status(400);
