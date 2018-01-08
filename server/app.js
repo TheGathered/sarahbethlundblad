@@ -110,23 +110,31 @@ app.get("/wp-json/preview", (req, res) => {
 });
 
 app.get(
-  "/wp-json/:type?/:version?/:resource?/:id?",
+  "/api/:type?/:version?/:resource?/:id?",
   requestProxy({
     cache: false,
     url: config.endpoint + "/:type?/:version?/:resource?/:id?"
   })
 );
 
+app.get('/test', (req, res)=> {
+  return  res.send('ok');
+})
+
+app.post('/test', (req, res)=> {
+  return res.status(200);
+})
+
 // Serve static assets
 app.use(express.static(path.resolve(__dirname, "..", "build")));
 
-// app.get("/preview", (req, res) => {
+// app.get("/preview",auth, (req, res) => {
 //   // console.log('referer',req.headers.referer);
 //   res.sendFile(path.resolve(__dirname, "..", "build", "index.html"));
 // });
 
 app.get("*", (req, res) => {
-  res.sendFile(path.resolve(__dirname, "..", "build", "index.html"));
+  return res.sendFile(path.resolve(__dirname, "..", "build", "index.html"));
 });
 
 module.exports = app;
