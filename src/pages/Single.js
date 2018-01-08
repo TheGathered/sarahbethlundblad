@@ -3,7 +3,7 @@ import { Link } from "react-router";
 import { base } from "../config";
 // import logo from '../logo.png';
 import { Helmet } from "react-helmet";
-import { StructuredDataItem, StructuredDataOrganization } from "../helpers/Microdata";
+import { StructuredDataItem, StructuredDataOrganization,StructuredBreadcrumb } from "../helpers/Microdata";
 import { blogInfo, singlePost } from "../helpers/Fetch";
 import ReactGA from "react-ga";
 
@@ -48,11 +48,12 @@ class BlogPost extends Component {
 
       let artwork = StructuredDataItem(this.state.post);
       let person = StructuredDataOrganization();
+      let breadcrumb = StructuredBreadcrumb(this.state.post)
 
       // TODO: decide on if next / prev is withing category or over all
       return (
         <div className="App">
-          <Helmet script={[artwork,person]}>
+          <Helmet script={[artwork,person,breadcrumb]}>
             <meta charSet="utf-8" />
             <meta name="theme-color" content="#ffffff" />
             <title>{title}</title>
@@ -171,11 +172,10 @@ class BlogPost extends Component {
   }
 
   componentWillMount() {
-    var page = this.props.params.slug || false, preview = false;
+    var page = this.props.params.slug || false;
 
     if(!page && this.props.route.path === '/preview' && this.props.location.query.p) {
       page = parseInt(this.props.location.query.p, 10);
-      preview = true;
     }
     this.setState(
       {

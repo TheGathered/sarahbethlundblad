@@ -74,7 +74,6 @@ export function singlePost(page) {
         .slug(page)
         .embed()
         .then(post => {
-          console.log(post);
           resolve({
             post: post.map(mapproject)[0],
             loaded: true

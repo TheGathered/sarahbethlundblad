@@ -1,3 +1,4 @@
 module.exports = {
-  'endpoint': '.../wp-json'
+  'endpoint': '.../wp-json',
+  'siteUrl': 'https://sarah-beth.co.uk'
 }
