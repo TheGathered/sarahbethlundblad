@@ -7,7 +7,7 @@ const wp = new WPAPI({ endpoint: endpoint });
 
 let categories, info;
 
-var fetchVars = { method: "GET", mode: "cors", cache: "default" };
+// var fetchVars = { method: "GET", mode: "cors", cache: "default" };
 
 // let tags, about
 
@@ -56,7 +56,7 @@ export function postList(page, perpage, taxonomy) {
 export function singlePost(page) {
   return new Promise((resolve, reject) => {
     if (Number.isInteger(page)) {
-      return fetch(endpoint + "/preview?p=" + page, fetchVars)
+      return fetch(endpoint + "/preview?p=" + page)
         .then(function(response) {
           return response.json();
         })
@@ -100,12 +100,8 @@ export function singlePage(slug) {
 
 function fetchPosts(type, page, perpage) {
   return new Promise((resolve, reject) => {
-    wp[type]()
-      .perPage(perpage)
-      .page(page)
-      .embed()
-      .then(
-        posts => {
+    wp[type]().perPage(perpage).page(page).embed().then(posts => {
+          console.log(posts)
           if (!posts.length) {
             reject(`No post under "${type}"`);
           }
@@ -212,33 +208,24 @@ function siblingPosts(obj) {
 }
 
 function mapproject(response) {
+
+  var featureMedia = response._embedded["wp:featuredmedia"] ? response._embedded["wp:featuredmedia"][0] : false;
+  var image = false
+  if (featureMedia){
+    image = {
+      large : featureMedia.media_details.sizes.full.source_url || false,
+      medium : featureMedia.media_details.sizes.medium.source_url || image.large || false,
+      small : featureMedia.media_details.sizes.thumbnail.source_url || image.large || false,
+      title : featureMedia.title,
+      aspect: Math.round(featureMedia.media_details.height / featureMedia.media_details.width * 100) + "%"
+    }
+  }
+
   return {
     id: response.id,
     slug: response.slug,
     price: response.price || false,
-    image:
-      response._embedded["wp:featuredmedia"] &&
-      response._embedded["wp:featuredmedia"][0].title
-        ? {
-            large:
-              response._embedded["wp:featuredmedia"][0].media_details.sizes.full
-                .source_url,
-            medium:
-              response._embedded["wp:featuredmedia"][0].media_details.sizes
-                .medium.source_url,
-            small:
-              response._embedded["wp:featuredmedia"][0].media_details.sizes
-                .thumbnail.source_url,
-            title: response._embedded["wp:featuredmedia"][0].title,
-            aspect:
-              Math.round(
-                response._embedded["wp:featuredmedia"][0].media_details.height /
-                  response._embedded["wp:featuredmedia"][0].media_details
-                    .width *
-                  100
-              ) + "%"
-          }
-        : false,
+    image: image,
     name: response.title.rendered,
     description: response.content.rendered,
     excerpt: response.excerpt,
