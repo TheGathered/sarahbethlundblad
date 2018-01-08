@@ -85,7 +85,7 @@ app.use(function(req, res, next) {
 
 //TODO: figure out how to use Nounce cookies for cross domain CORS
 
-app.get("/wp-json/preview", (req, res) => {
+app.get("/api/preview", (req, res) => {
   wp = new WPAPI({
     endpoint: config.endpoint,
     auth: false
