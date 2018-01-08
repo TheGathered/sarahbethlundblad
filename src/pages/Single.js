@@ -13,7 +13,7 @@ import Loading from "../components/Loading";
 import _ from "lodash";
 
 import './SinglePost.css';
-import ProgressiveImage from 'react-progressive-image';
+// import ProgressiveImage from 'react-progressive-image';
 
 class BlogPost extends Component {
   constructor(props) {
@@ -31,7 +31,7 @@ class BlogPost extends Component {
 
   render() {
     if (this.state.loaded) {
-      console.log(this.state);
+      // console.log(this.state);
 
       let post = this.state.post;
       let blogInfo = this.state.blogInfo;
@@ -77,11 +77,14 @@ class BlogPost extends Component {
           <div className="App-header">
             <header className="top">
               <h1 className="App-title">
-                <span
-                  className="title"
-                  dangerouslySetInnerHTML={{ __html: post.name }}
-                />
+                <Link to="/" title="Back to Front Page">
+                  <span
+                    className="title"
+                    dangerouslySetInnerHTML={{ __html: post.name }}
+                  />
+                </Link>
               </h1>
+
               <h2>
                 <Link to="/" title={this.state.blogInfo.name}>
                   <span
@@ -129,8 +132,7 @@ class BlogPost extends Component {
                 // </ProgressiveImage>
               )}
             </figure>
-            <div className="description" dangerouslySetInnerHTML={{ __html: post.description }} >
-            </div>
+            <div className="description" ><div className="content" dangerouslySetInnerHTML={{ __html: post.description }} /></div>
           </article>
 
           <nav className="pagination">
@@ -167,9 +169,9 @@ class BlogPost extends Component {
 
   componentWillMount() {
     // console.log(this.props.params.slug)
-    if (this.props.params.SinglePage) {
-      console.log("this is a page");
-    }
+    // if (this.props.params.SinglePage) {
+    //   console.log("this is a page");
+    // }
     this.setState(
       {
         page: this.props.params.slug,
@@ -184,13 +186,13 @@ class BlogPost extends Component {
                 this.setState((prevState, props) => posts);
               },
               err => {
-                console.error(err);
+                // console.error(err);
                 this.setState({ error: err });
               }
             );
           },
           err => {
-            console.error(err);
+            // console.error(err);
             this.setState({ error: err });
           }
         );

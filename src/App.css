@@ -19,7 +19,7 @@ html {
 .App {
   /*padding: 3.6em;*/
   /*padding-bottom: 5.5em;*/
-  /*padding-top: 10.6em;*/
+  padding-top: 10.6em;
 }
 
 body {
@@ -82,7 +82,7 @@ h3 {
   font-size: large;
 }
 .top {
-  /*position: fixed;*/
+  position: fixed;
   left: 0;
   right: 0;
   top: 0;
