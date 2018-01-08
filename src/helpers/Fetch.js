@@ -14,7 +14,7 @@ var fetchVars = { method: "GET", mode: "cors", cache: "default" };
 export function blogInfo(props, page) {
   return new Promise((resolve, reject) => {
     return Promise.all([
-      fetch(endpoint, fetchVars).then(info => info.json()),
+      fetch(endpoint).then(info => info.json()),
       wp.categories()
       // wp.tags(),
       // singlePage('about')

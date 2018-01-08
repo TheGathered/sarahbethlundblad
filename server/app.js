@@ -19,7 +19,7 @@ var cache = apicache.options({
 }).middleware;
 
 var sitemap = sm.createSitemap({
-  hostname: "http://sarah-beth.co.uk",
+  hostname: "https://sarah-beth.co.uk",
   cacheTime: 600000, // 600 sec - cache purge period
   urls: [
     { url: "/", changefreq: "weekly", priority: 0.9 },
@@ -29,14 +29,8 @@ var sitemap = sm.createSitemap({
   ]
 });
 
-var auth = {
-  users: {
-    sarah: "dt99sbh"
-  }
-};
-
 if (process.env.NODE_ENV === "production") app.use(cache("1 day"));
-else app.use(cache("30 seconds"));
+// else app.use(cache("30 seconds"));
 
 const robotsMiddleware = expressRobotsMiddleware({
   UserAgent: "*",
@@ -51,9 +45,7 @@ var auth = function(req, res, next) {
     res.set("WWW-Authenticate", "Basic realm=Authorization Required");
     return res.send(401);
   }
-
   var user = basicAuth(req);
-
   if (!user || !user.name || !user.pass) {
     return unauthorized(res);
   }
@@ -104,7 +96,7 @@ app.get("/wp-json/preview", (req, res) => {
     .id(req.query.p)
     .auth({ username: config.wpAuth.user, password: config.wpAuth.pass })
     .param({
-      status: "all"
+      status: "draft"
     })
     .embed()
     .then(
@@ -128,10 +120,10 @@ app.get(
 // Serve static assets
 app.use(express.static(path.resolve(__dirname, "..", "build")));
 
-app.get("/preview", (req, res) => {
-  console.log('referer',req.headers.referer);
-  res.sendFile(path.resolve(__dirname, "..", "build", "index.html"));
-});
+// app.get("/preview", (req, res) => {
+//   // console.log('referer',req.headers.referer);
+//   res.sendFile(path.resolve(__dirname, "..", "build", "index.html"));
+// });
 
 app.get("*", (req, res) => {
   res.sendFile(path.resolve(__dirname, "..", "build", "index.html"));
