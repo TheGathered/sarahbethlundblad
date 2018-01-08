@@ -3,7 +3,7 @@ import { Link } from "react-router";
 import { base } from "../config";
 // import logo from '../logo.png';
 import { Helmet } from "react-helmet";
-import { StructuredDataItem } from "../helpers/Microdata";
+import { StructuredDataItem, StructuredDataOrganization } from "../helpers/Microdata";
 import { blogInfo, singlePost } from "../helpers/Fetch";
 import ReactGA from "react-ga";
 
@@ -46,12 +46,13 @@ class BlogPost extends Component {
       ReactGA.set({ title: title });
       ReactGA.pageview(window.location.pathname + window.location.search);
 
-      let schema = StructuredDataItem(this.state.post);
+      let artwork = StructuredDataItem(this.state.post);
+      let person = StructuredDataOrganization();
 
       // TODO: decide on if next / prev is withing category or over all
       return (
         <div className="App">
-          <Helmet script={[schema]}>
+          <Helmet script={[artwork,person]}>
             <meta charSet="utf-8" />
             <meta name="theme-color" content="#ffffff" />
             <title>{title}</title>

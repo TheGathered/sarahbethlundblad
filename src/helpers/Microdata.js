@@ -23,8 +23,8 @@ export function StructuredDataOrganization(post) {
 			"@context": "http://schema.org",
 			"@type": "Person",
 			"name": "Sarah Beth Lundblad",
-			"url": "http://www.sarah-beth.co.uk",
-			"image": "http://www.sarah-beth.co.uk/apple-icon.png",
+			"url": "https://sarah-beth.co.uk",
+			"image": "https://sarah-beth.co.uk/apple-icon.png",
 			"sameAs": [
 				"https://www.facebook.com/sarahbethharrison",
 				"https://www.instagram.com/sbl.art/",
