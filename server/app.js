@@ -30,7 +30,6 @@ var sitemap = sm.createSitemap({
 });
 
 if (process.env.NODE_ENV === "production") app.use(cache("1 day"));
-else app.use(cache("5 minutes"));
 
 const robotsMiddleware = expressRobotsMiddleware({
   UserAgent: "*",
