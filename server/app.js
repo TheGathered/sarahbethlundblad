@@ -69,7 +69,7 @@ app.get("/sitemap.xml", function(req, res) {
 });
 
 app.use(function(req, res, next) {
-  var allowedOrigins = ["https://sarah-beth.co.uk", "https://sarah-beth.net"];
+  var allowedOrigins = ["https://sarah-beth.co.uk", "https://sarah-beth.net","https://preview.sarah-beth.co.uk" ];
   var origin = req.headers.origin;
   if (allowedOrigins.indexOf(origin) > -1) {
     res.setHeader("Access-Control-Allow-Origin", origin);
