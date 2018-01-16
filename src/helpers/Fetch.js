@@ -100,7 +100,7 @@ export function singlePage(slug) {
 
 function fetchPosts(type, page, perpage) {
   return new Promise((resolve, reject) => {
-    wp[type]().perPage(perpage).page(page).embed().then(posts => {
+    wp[type]().orderby( 'menu_order' ).perPage(perpage).page(page).embed().then(posts => {
           console.log(posts)
           if (!posts.length) {
             reject(`No post under "${type}"`);
