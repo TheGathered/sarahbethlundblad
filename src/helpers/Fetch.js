@@ -56,7 +56,14 @@ export function postList(page, perpage, taxonomy) {
 export function singlePost(page) {
   return new Promise((resolve, reject) => {
     if (Number.isInteger(page)) {
-      return fetch(endpoint + "/preview?p=" + page)
+      var myHeaders = new Headers();
+          myHeaders.append('pragma', 'no-cache');
+          myHeaders.append('cache-control', 'no-cache');
+      var myInit = {
+        method: 'GET',
+        headers: myHeaders,
+      };
+      return fetch(endpoint + "/preview?p=" + page, myInit)
         .then(function(response) {
           return response.json();
         })
