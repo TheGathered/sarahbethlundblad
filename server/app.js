@@ -18,6 +18,33 @@ var cache = apicache.options({
   // redisClient: redis.createClient()
 }).middleware;
 
+const robotsMiddleware = expressRobotsMiddleware({
+  UserAgent: "*",
+  Disallow: ["/preview","/wp-json"],
+  Noindex: ["/preview","/wp-json"],
+  Allow: "/",
+  CrawlDelay: "5"
+});
+
+var auth = function(req, res, next) {
+  if (process.env.NODE_ENV === "production") return next();
+  function unauthorized(res) {
+    res.set("WWW-Authenticate", "Basic realm=Authorization Required");
+    return res.send(401);
+  }
+  var user = basicAuth(req);
+  if (!user || !user.name || !user.pass) {
+    return unauthorized(res);
+  }
+
+  if (user.name === config.httpAuth.user && user.pass === config.httpAuth.pass) {
+    return next();
+  } else {
+    return unauthorized(res);
+  }
+};
+
+
 var sitemap = sm.createSitemap({
   hostname: "https://sarah-beth.co.uk",
   cacheTime: 600000, // 600 sec - cache purge period
@@ -36,33 +63,10 @@ else {
     res.setHeader('Pragma', 'no-cache');
     res.setHeader('Expires', '0');
     next();
-});
+  });
+  // app.use(auth);
+
 }
-
-const robotsMiddleware = expressRobotsMiddleware({
-  UserAgent: "*",
-  Disallow: ["/preview","/wp-json"],
-  Noindex: ["/preview","/wp-json"],
-  Allow: "/",
-  CrawlDelay: "5"
-});
-
-var auth = function(req, res, next) {
-  function unauthorized(res) {
-    res.set("WWW-Authenticate", "Basic realm=Authorization Required");
-    return res.send(401);
-  }
-  var user = basicAuth(req);
-  if (!user || !user.name || !user.pass) {
-    return unauthorized(res);
-  }
-
-  if (user.name === config.httpAuth.user && user.pass === config.httpAuth.pass) {
-    return next();
-  } else {
-    return unauthorized(res);
-  }
-};
 
 app.get("/robots.txt", robotsMiddleware);
 
@@ -120,12 +124,26 @@ app.get("/api/preview", (req, res) => {
     );
 });
 
-app.get(
-  "/api/:type?/:version?/:resource?/:id?",
-  requestProxy({
+var proxy;
+if (process.env.NODE_ENV === "production"){
+  proxy = {
     cache: false,
     url: config.endpoint + "/:type?/:version?/:resource?/:id?"
-  })
+  }
+}
+else {
+  proxy = {
+    cache: false,
+    url: config.endpoint + "/:type?/:version?/:resource?/:id?",
+    headers: {
+        Authorization: "Basic " + new Buffer(config.wpAuth.user + ":" + config.wpAuth.pass).toString('base64')
+    }
+  }
+}
+
+app.get(
+  "/api/:type?/:version?/:resource?/:id?",
+  requestProxy(proxy)
 );
 
 app.get('/test', (req, res)=> {
@@ -139,10 +157,9 @@ app.post('/test', (req, res)=> {
 // Serve static assets
 app.use(express.static(path.resolve(__dirname, "..", "build")));
 
-// app.get("/preview",auth, (req, res) => {
-//   // console.log('referer',req.headers.referer);
-//   res.sendFile(path.resolve(__dirname, "..", "build", "index.html"));
-// });
+app.get("/preview", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "..", "build", "index.html"));
+});
 
 app.get("*", (req, res) => {
   return res.sendFile(path.resolve(__dirname, "..", "build", "index.html"));

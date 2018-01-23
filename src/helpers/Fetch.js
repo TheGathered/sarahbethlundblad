@@ -108,18 +108,21 @@ export function singlePage(slug) {
 function fetchPosts(type, page, perpage) {
   return new Promise((resolve, reject) => {
     wp[type]().perPage(perpage).page(page).embed().then(posts => {
-          console.log(posts)
           if (!posts.length) {
             reject(`No post under "${type}"`);
           }
-          resolve({
+
+          var res = {
             posts: posts.map(mapproject),
             total_pages: parseInt(posts._paging.totalPages, 10),
             next_page:
               page < posts._paging.totalPages ? parseInt(page, 10) + 1 : false,
             previous_page: page > 1 ? parseInt(page, 10) - 1 : false,
             loaded: true
-          });
+          }
+          // console.log(res)
+
+          resolve(res);
         },
         err => {
           reject(err);
@@ -227,8 +230,8 @@ function mapproject(response) {
       aspect: Math.round(featureMedia.media_details.height / featureMedia.media_details.width * 100) + "%"
     }
   }
-
-  return {
+  // console.log(image);
+  var res = {
     id: response.id,
     slug: response.slug,
     price: response.price || false,
@@ -239,13 +242,15 @@ function mapproject(response) {
     author: response._embedded["author"]
       ? response._embedded["author"].map(author => author.name)[0]
       : false,
-    // categories: response.categories.map(o => categories.filter(f => f.id === o)[0]).map(o => o.slug).join() || false,
+    // // categories: response.categories.map(o => categories.filter(f => f.id === o)[0]).map(o => o.slug).join() || false,
     categories: response.category.map(cat => cat.slug).join(),
     type: response.category.map(cat => cat.description).join(),
     // tags: TaxObj(tags, response.tags) || false,
-    previous_post:
-      response.previous_post.id && siblingPosts(response.previous_post),
+    previous_post: response.previous_post.id && siblingPosts(response.previous_post),
     next_post: response.next_post.id && siblingPosts(response.next_post),
     for_sale: response.acf.for_sale || false
   };
+  console.log(res);
+
+  return res;
 }

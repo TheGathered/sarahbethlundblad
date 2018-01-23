@@ -57,7 +57,6 @@ class BlogHome extends Component {
 
   render() {
     // return Loading()
-
     if (this.state.loaded) {
       // console.log(this.state)
 
