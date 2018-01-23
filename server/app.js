@@ -77,16 +77,17 @@ app.get("/sitemap.xml", function(req, res) {
 });
 
 app.use(function(req, res, next) {
-  if (process.env.NODE_ENV !== "production") {
-    res.header("Access-Control-Allow-Origin", "*")
-  }
-  else {
-    var allowedOrigins = ["https://sarah-beth.co.uk", "https://sarah-beth.net" ];
-    var origin = req.headers.origin;
-    if (allowedOrigins.indexOf(origin) > -1) {
-      res.setHeader("Access-Control-Allow-Origin", origin);
-    }
-  }
+  // if (process.env.NODE_ENV !== "production") {
+  //   res.header("Access-Control-Allow-Origin", "*")
+  // }
+  // else {
+  //   var allowedOrigins = ["https://sarah-beth.co.uk", "https://sarah-beth.net" ];
+  //   var origin = req.headers.origin;
+  //   if (allowedOrigins.indexOf(origin) > -1) {
+  //     res.setHeader("Access-Control-Allow-Origin", origin);
+  //   }
+  // }
+  res.header("Access-Control-Allow-Origin", "*")
   res.header("Access-Control-Allow-Methods", "GET, OPTIONS");
   res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
   res.header("Access-Control-Allow-Credentials", true);
