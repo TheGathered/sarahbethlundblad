@@ -46,7 +46,10 @@ class BlogHome extends Component {
 
   componentDidUpdate() {
     if (this.state.loaded) {
-      // var elems = document.querySelectorAll('.post');
+      var top = document.querySelector('.top');
+      var app = document.querySelector('.App');
+      app.style['padding-top'] = parseInt(top.offsetHeight,10)+'px';
+      // var elems = document.querySelector('.post');
       // elems.forEach(e=>{
       // 	var rotate = 0.5 - Math.random();
       // 	var skew = Math.random();
